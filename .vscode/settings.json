@@ -2,5 +2,7 @@
     "[c]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "xaver.clang-format",
+    },"files.associations": {
+        "*.c": "cpp"
     }
 }
