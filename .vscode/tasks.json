@@ -11,6 +11,18 @@
             },
             "command": "cmake ..",
             "problemMatcher": []
+        },
+        {
+            "label": "make",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
