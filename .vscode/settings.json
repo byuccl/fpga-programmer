@@ -1,8 +1,9 @@
 {
     "[c]": {
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "xaver.clang-format",
-    },"files.associations": {
+    },
+    "files.associations": {
         "*.c": "cpp"
-    }
+    },
+    "C_Cpp.clang_format_fallbackStyle": "LLVM"
 }
