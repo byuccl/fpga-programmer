@@ -5,8 +5,11 @@ import os
 import subprocess
 import re
 import serial
+import shutil
+# import pathlib
 
 VITIS_BIN = "/opt/Xilinx/Vitis/2019.2/bin/vitis"
+XSCT_BIN_WINDOWS = 'C:/Xilinx/Vitis/2019.2/bin/xsct'
 
 LABS_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -35,8 +38,9 @@ def execute(cmd, cwd = None, env = None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("elf", help="The elf file to run (ex. 'lab1/lab1.elf')")
+    parser.add_argument("--windows", action='store_true', help="This flag indicates the Xilinx tools are installed in Windows")
     parser.add_argument("--serial", help="The serial device (ex. '/dev/ttyUSB1')")
+    parser.add_argument("elf", help="The elf file to run (ex. 'lab1/lab1.elf')")
     args = parser.parse_args()
 
     elf_file = args.elf
@@ -82,10 +86,21 @@ def main():
 
     print("\n" + bcolors.HEADER + "Programming elf file:", elf_path, bcolors.ENDC)
 
+    if args.windows:
+        shutil.copyfile(elf_path, "/mnt/c/temp/ecen330/program.elf")
+        shutil.copyfile("xil_arm_toolchain/run_elf_windows.tcl", "/mnt/c/temp/ecen330/run_elf_windows.tcl")
+        shutil.copyfile("hw/330_hw_system.bit", "/mnt/c/temp/ecen330/330_hw_system.bit")
+        shutil.copyfile("hw/330_hw_system.xsa", "/mnt/c/temp/ecen330/330_hw_system.xsa")
+        # shutil.copyfile("hw/ps7_init.tcl", "/mnt/c/temp/ecen330/ps7_init.tcl")
+
     # Execute programming and print output
     my_env = os.environ.copy()
     my_env["ELF_FILE"] = elf_path
-    cmd = [VITIS_BIN, "-batch", "xil_arm_toolchain/run_elf.tcl"]
+    if args.windows:
+        cmd = ["cmd.exe", "/C", XSCT_BIN_WINDOWS + " C:/temp/ecen330/run_elf_windows.tcl"]
+    else:
+        cmd = [VITIS_BIN, "-batch", "xil_arm_toolchain/run_elf.tcl"]
+    print (cmd)
     for line in execute(cmd, cwd = LABS_DIR, env = my_env):
         print(line.strip())
 
