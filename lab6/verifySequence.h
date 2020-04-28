@@ -1,11 +1,8 @@
-* verifySequence.h
- *
- *  Created on: Oct 28, 2014
- *      Author: hutch
- */
-
 #ifndef VERIFYSEQUENCE_H_
 #define VERIFYSEQUENCE_H_
+
+#include <stdbool.h>
+#include <stdint.h>
 
 // State machine will run when enabled.
 void verifySequence_enable();

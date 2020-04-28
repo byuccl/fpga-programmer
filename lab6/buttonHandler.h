@@ -1,5 +1,7 @@
 #ifndef BUTTONHANDLER_H_
 #define BUTTONHANDLER_H_
+
+#include <stdbool.h>
 #include <stdint.h>
 // Get the simon region numbers. See the source code for the region numbering scheme.
 uint8_t buttonHandler_getRegionNumber();

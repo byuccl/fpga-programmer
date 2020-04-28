@@ -1,28 +1,47 @@
 cmake_minimum_required (VERSION 3.14.5)
 
 project(ecen330)
+include_directories(.)
 
 if (BOARD)
     # These are the options used to compile and run on the physical Zybo board    
     # You will need to compile using "cmake -DBOARD=1"
+    
     # This sets up options for the ARM compiler
-    include(xil_arm_toolchain/toolchain.cmake)
+    include(zybo/xil_arm_toolchain/toolchain.cmake)
 
     # Places to search for .h header files
-    include_directories(.)
-    include_directories("xil_arm_toolchain/bsp/ps7_cortexa9_0/include")
+    include_directories(zybo)
+    include_directories(zybo/supportFiles)
+    include_directories("zybo/xil_arm_toolchain/bsp/ps7_cortexa9_0/include")
 
     # link_directories instructs the compiler where it should look for libraries.
-    link_directories(xil_arm_toolchain)
-    add_subdirectory(supportFiles)
+    link_directories(zybo/xil_arm_toolchain)
 
+    # add_subdirectory runs another CMakeLists.txt in a subdirectory
+    add_subdirectory(zybo/supportFiles)
+
+    # Set this variable to the path of the xilinx Vitis tool
     set(XIL_VITIS_PATH /opt/Xilinx/Vitis/2019.2)
 else()
     # These options are required if you want to use the Zybo board emulator    
+
+    # This sets up options for the compiler
     include (emulator/emu.cmake)
+
+    # Places to search for .h header files
     include_directories(emulator)
+    include_directories(emulator/supportFiles)
+
+    # link_directories instructs the compiler where it should look for libraries.
     link_directories(emulator)
+
+    # add_subdirectory runs another CMakeLists.txt in a subdirectory
     add_subdirectory(emulator/supportFiles)
+
+     # Set this variable to the name of libraries that the emulator needs to link to
+    set(EMULATOR_LIBS emu Qt5Widgets Qt5Gui Qt5Core pthread)
+
 endif()
 
 # Subdirectories to look for other CMakeLists.txt files
