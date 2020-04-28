@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 #include <stdint.h>
-=======
-#include "my_libs/buttons.h" // Modify this to reflect the location of your buttons.h
-#include "my_libs/intervalTimer.h" // Modify this to reflect the location of your intervalTimer.h
-#include "supportFiles/utils.h"
-#include "xil_io.h"
->>>>>>> d8871b9ee509ab410b0a8842c8d2fda7b9d8dc30
 #include <stdio.h>
 
 #include "emulator.h"
