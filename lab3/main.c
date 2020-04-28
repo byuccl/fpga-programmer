@@ -1,5 +1,5 @@
-#include "mylibs/buttons.h" // Modify this to reflect the location of your buttons.h
-#include "mylibs/intervalTimer.h" // Modify this to reflect the location of your intervalTimer.h
+#include "my_libs/buttons.h" // Modify this to reflect the location of your buttons.h
+#include "my_libs/intervalTimer.h" // Modify this to reflect the location of your intervalTimer.h
 #include "supportFiles/utils.h"
 #include "xil_io.h"
 #include <stdio.h>
