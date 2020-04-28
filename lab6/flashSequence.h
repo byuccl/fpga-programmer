@@ -8,6 +8,8 @@
 #ifndef FLASHSEQUENCE_H_
 #define FLASHSEQUENCE_H_
 
+#include <stdbool.h>
+
 // Turns on the state machine. Part of the interlock.
 void flashSequence_enable();
 

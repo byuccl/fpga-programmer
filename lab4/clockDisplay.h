@@ -1,3 +1,6 @@
+#ifndef CLOCKDISPLAY_H
+#define CLOCKDISPLAY_H
+
 #include <stdbool.h>
 
 // Called only once - performs any necessary inits.
@@ -19,3 +22,5 @@ void clockDisplay_advanceTimeOneSecond();
 
 // Run a test of clock-display functions.
 void clockDisplay_runTest();
+
+#endif 
