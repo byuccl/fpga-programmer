@@ -42,6 +42,8 @@ else()
      # Set this variable to the name of libraries that the emulator needs to link to
     set(EMULATOR_LIBS emu Qt5Widgets Qt5Gui Qt5Core pthread)
 
+    # Include this header file with all emulator builds
+    add_definitions(-include emulator.h)
 endif()
 
 # Subdirectories to look for other CMakeLists.txt files

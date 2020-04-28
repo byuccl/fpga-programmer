@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "emulator.h"
 #include "xil_io.h"
 #include "xparameters.h"
 
@@ -18,8 +17,6 @@ uint32_t readTimer1Register(uint32_t registerOffset) {
                      registerOffset; // Add the offset to the base address.
   return Xil_In32(address);          // Read the register at that address.
 }
-
-
 
 void milestone1() {
   printf("=============== Starting milestone 1 ===============\n\r");
@@ -80,7 +77,7 @@ void milestone2() {
   printf("waiting until BTN0 is pressed.\n\r"); // Tell user what you are
                                                 // waiting for.
   do {
-    utils_wait();
+    utils_sleep();
   } while (!(buttons_read() & BUTTONS_BTN0_MASK));
   // Start all of the interval timers.
   intervalTimer_start(INTERVAL_TIMER_TIMER_0);
@@ -89,7 +86,7 @@ void milestone2() {
   printf("started timers.\n\r");
   printf("waiting until BTN1 is pressed.\n\r"); // Poll BTN1.
   do {
-    utils_wait();
+    utils_sleep();
   } while (
       !(buttons_read() & BUTTONS_BTN1_MASK)); // Loop here until BTN1 pressed.
   // Stop all of the timers.

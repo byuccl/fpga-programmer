@@ -14,6 +14,6 @@ void utils_msDelay(long ms);
 // Sleeps the userThread while waiting for an event, that may be:
 // a timer, or a mouse-event, for example. This function is implemented
 // in utils.cpp in the emulator.
-void utils_wait();
+void utils_sleep();
 
 #endif /* UTILS_H_ */

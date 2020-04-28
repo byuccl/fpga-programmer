@@ -1,4 +1,3 @@
-#include "emulator.h"
 #include "wamDisplay.h"
 #include "wamControl.h"
 #include "supportFiles/utils.h"
