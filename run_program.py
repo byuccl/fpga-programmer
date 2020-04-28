@@ -6,12 +6,12 @@ import subprocess
 import re
 import serial
 import shutil
-# import pathlib
+import pathlib
 
 VITIS_BIN = "/opt/Xilinx/Vitis/2019.2/bin/vitis"
 XSCT_BIN_WINDOWS = 'C:/Xilinx/Vitis/2019.2/bin/xsct'
 
-LABS_DIR = os.path.dirname(os.path.abspath(__file__))
+LABS_DIR = pathlib.Path(__file__).resolve().parent
 
 class bcolors:
     HEADER = '\033[95m'
@@ -88,9 +88,9 @@ def main():
 
     if args.windows:
         shutil.copyfile(elf_path, "/mnt/c/temp/ecen330/program.elf")
-        shutil.copyfile("xil_arm_toolchain/run_elf_windows.tcl", "/mnt/c/temp/ecen330/run_elf_windows.tcl")
-        shutil.copyfile("hw/330_hw_system.bit", "/mnt/c/temp/ecen330/330_hw_system.bit")
-        shutil.copyfile("hw/330_hw_system.xsa", "/mnt/c/temp/ecen330/330_hw_system.xsa")
+        shutil.copyfile(LABS_DIR/"zybo/xil_arm_toolchain/run_elf_windows.tcl", "/mnt/c/temp/ecen330/run_elf_windows.tcl")
+        shutil.copyfile(LABS_DIR/"hw/330_hw_system.bit", "/mnt/c/temp/ecen330/330_hw_system.bit")
+        shutil.copyfile(LABS_DIR/"hw/330_hw_system.xsa", "/mnt/c/temp/ecen330/330_hw_system.xsa")
         # shutil.copyfile("hw/ps7_init.tcl", "/mnt/c/temp/ecen330/ps7_init.tcl")
 
     # Execute programming and print output
@@ -99,7 +99,7 @@ def main():
     if args.windows:
         cmd = ["cmd.exe", "/C", XSCT_BIN_WINDOWS + " C:/temp/ecen330/run_elf_windows.tcl"]
     else:
-        cmd = [VITIS_BIN, "-batch", "xil_arm_toolchain/run_elf.tcl"]
+        cmd = [VITIS_BIN, "-batch", LABS_DIR/"zybo/xil_arm_toolchain/run_elf.tcl"]
     print (cmd)
     for line in execute(cmd, cwd = LABS_DIR, env = my_env):
         print(line.strip())
