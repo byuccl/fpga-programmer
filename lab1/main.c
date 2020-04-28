@@ -1,7 +1,9 @@
 
 // Print out "hello world" on both the console and the LCD screen.
 
+
 #include "supportFiles/display.h"
+
 #include <stdio.h>
 int main() {
   display_init(); // Must init all of the software and underlying hardware for
@@ -13,6 +15,7 @@ int main() {
   display_println("hello world (on the LCD)!"); // This actually prints the
                                                 // string to the LCD.
   printf("hello world!\n\r");                   // This prints on the console.
+  return 0;
 }
 
 // This function must be defined but can be left empty for now.
