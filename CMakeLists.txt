@@ -62,19 +62,19 @@ add_custom_command(TARGET BOOT.bin
 # -MM = must match (error if source file does not exist)
 # -j = junk paths (store all files flat in zip archive)
 add_custom_target(zipLab2)
-add_custom_command(TARGET zipLab2 COMMAND zip -MM -j ../lab2/\${USER}_lab2.zip ../lab2/main.c ../my_libs/switches.c ../my_libs/buttons.c)
+add_custom_command(TARGET zipLab2 COMMAND zip -MM -j ../lab2/\${USER}_lab2.zip ../lab2/main.c ../my_libs/switches.c ../my_libs/buttons.c ../lab2/CMakeLists.txt)
 
 add_custom_target(zipLab3)
-add_custom_command(TARGET zipLab3 COMMAND zip -MM -j ../lab3/\${USER}_lab3.zip ../lab3/main.c ../my_libs/intervalTimer.c)
+add_custom_command(TARGET zipLab3 COMMAND zip -MM -j ../lab3/\${USER}_lab3.zip ../lab3/main.c ../my_libs/intervalTimer.c ../lab3/CMakeLists.txt)
 
 add_custom_target(zipLab4)
-add_custom_command(TARGET zipLab4 COMMAND zip -MM -j ../lab4/\${USER}_lab4.zip ../lab4/clockControl.c ../lab4/clockDisplay.c)
+add_custom_command(TARGET zipLab4 COMMAND zip -MM -j ../lab4/\${USER}_lab4.zip ../lab4/clockControl.c ../lab4/clockDisplay.c ../lab4/CMakeLists.txt)
 
 add_custom_target(zipLab5)
-add_custom_command(TARGET zipLab5 COMMAND zip -MM -j ../lab5/\${USER}_lab5.zip ../lab5/minimax.c ../lab5/ticTacToeDisplay.c ../lab5/ticTacToeControl.c)
+add_custom_command(TARGET zipLab5 COMMAND zip -MM -j ../lab5/\${USER}_lab5.zip ../lab5/minimax.c ../lab5/ticTacToeDisplay.c ../lab5/ticTacToeControl.c ../lab5/CMakeLists.txt)
 
 add_custom_target(zipLab6)
-add_custom_command(TARGET zipLab6 COMMAND zip -MM -j ../lab6/\${USER}_lab6.zip ../lab6/buttonHandler.c ../lab6/flashSequence.c ../lab6/globals.c ../lab6/main.c ../lab6/simonControl.c ../lab6/simonDisplay.c ../lab6/verifySequence.c)
+add_custom_command(TARGET zipLab6 COMMAND zip -MM -j ../lab6/\${USER}_lab6.zip ../lab6/buttonHandler.c ../lab6/flashSequence.c ../lab6/globals.c ../lab6/main.c ../lab6/simonControl.c ../lab6/simonDisplay.c ../lab6/verifySequence.c ../lab6/CMakeLists.txt)
 
 add_custom_target(zipLab7)
-add_custom_command(TARGET zipLab7 COMMAND zip -MM -j ../lab7\${USER}_lab7.zip ../lab7/wamControl.c ../lab7/wamDisplay.c ../lab7/wamMain.c)
+add_custom_command(TARGET zipLab7 COMMAND zip -MM -j ../lab7\${USER}_lab7.zip ../lab7/wamControl.c ../lab7/wamDisplay.c ../lab7/wamMain.c ../lab7/CMakeLists.txt)
