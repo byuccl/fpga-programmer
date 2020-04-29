@@ -1,28 +1,21 @@
-#include "mylibs/buttons.h" // Modify this to reflect the location of your buttons.h
-#include "mylibs/intervalTimer.h" // Modify this to reflect the location of your intervalTimer.h
-#include "supportFiles/utils.h"
-#include "xil_io.h"
+#include <stdint.h>
 #include <stdio.h>
+
+#include "xil_io.h"
+#include "xparameters.h"
+
+#include "my_libs/buttons.h" // Modify this to reflect the location of your buttons.h
+#include "my_libs/intervalTimer.h" // Modify this to reflect the location of your intervalTimer.h
+#include "supportFiles/utils.h"
 
 #define TCR0_OFFSET 0x08 // register offset for TCR0
 #define TCR1_OFFSET 0x18 // register offset for TCR1
 
 // Reads the timer1 registers based upon the offset.
-u32 readTimer1Register(uint32_t registerOffset) {
+uint32_t readTimer1Register(uint32_t registerOffset) {
   uint32_t address = XPAR_AXI_TIMER_0_BASEADDR +
                      registerOffset; // Add the offset to the base address.
   return Xil_In32(address);          // Read the register at that address.
-}
-
-#define DELAY_COUNT 3
-// Simple busy-wait function.
-void waitALongTime() {
-  volatile int32_t a =
-      0;        // Use volatile so that optimizer doesn't mess things up.
-  int32_t i, j; // Simple index variables.
-  for (i = 0; i < DELAY_COUNT; i++) // Outer delay-loop.
-    for (j = 0; j < INT32_MAX; j++) // Inner delay-loop.
-      a++;
 }
 
 void milestone1() {
@@ -31,35 +24,42 @@ void milestone1() {
   intervalTimer_reset(INTERVAL_TIMER_TIMER_0); // Reset timer 0.
   // Show that the timer is reset.
   // Check lower register.
-  printf("timer_0 TCR0 should be 0 at this point:%ld\n\r",
+  printf("timer_0 TCR0 should be 0 at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
   // Check upper register.
-  printf("timer_0 TCR1 should be 0 at this point:%ld\n\r",
+  printf("timer_0 TCR1 should be 0 at this point:%u\n\r",
          readTimer1Register(TCR1_OFFSET));
   intervalTimer_start(INTERVAL_TIMER_TIMER_0); // Start timer 0.
   // Show that the timer is running.
   printf("The following register values should be changing while reading "
          "them.\n\r");
   // Just checking multiple times to see if the timer is running.
-  printf("timer_0 TCR0 should be changing at this point:%ld\n\r",
+  utils_msDelay(10);
+  printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
-  printf("timer_0 TCR0 should be changing at this point:%ld\n\r",
+  utils_msDelay(10);
+  printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
-  printf("timer_0 TCR0 should be changing at this point:%ld\n\r",
+  utils_msDelay(10);
+  printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
-  printf("timer_0 TCR0 should be changing at this point:%ld\n\r",
+  utils_msDelay(10);
+  printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
-  printf("timer_0 TCR0 should be changing at this point:%ld\n\r",
+  utils_msDelay(10);
+  printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
   // Wait about 2 minutes so that you roll over to TCR1.
-  // If you don't see a '1' or '2' in TCR1 after this long wait you probably
-  // haven't programmed the timer correctly.
-  waitALongTime();
+  // If you don't see a '1' in TCR1 after this long wait you probably haven't
+  // programmed the timer correctly.
+  //  waitALongTime();
+  printf("wait for awhile...\n");
+  utils_msDelay(44000);
   // Check lower register.
-  printf("timer_0 TCR0 value after wait:%lx\n\r",
+  printf("timer_0 TCR0 value after wait:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
   // Check upper register.
-  printf("timer_0 TCR1 should have changed at this point:%ld\n\r",
+  printf("timer_0 TCR1 should have changed at this point:%u\n\r",
          readTimer1Register(TCR1_OFFSET));
 }
 
@@ -76,16 +76,19 @@ void milestone2() {
   printf("Interval Timer Accuracy Test\n\r");   // User status message.
   printf("waiting until BTN0 is pressed.\n\r"); // Tell user what you are
                                                 // waiting for.
-  while (!(buttons_read() & BUTTONS_BTN0_MASK))
-    ; // Loop here until BTN0 pressed.
+  do {
+    utils_sleep();
+  } while (!(buttons_read() & BUTTONS_BTN0_MASK));
   // Start all of the interval timers.
   intervalTimer_start(INTERVAL_TIMER_TIMER_0);
   intervalTimer_start(INTERVAL_TIMER_TIMER_1);
   intervalTimer_start(INTERVAL_TIMER_TIMER_2);
   printf("started timers.\n\r");
   printf("waiting until BTN1 is pressed.\n\r"); // Poll BTN1.
-  while (!(buttons_read() & BUTTONS_BTN1_MASK))
-    ; // Loop here until BTN1 pressed.
+  do {
+    utils_sleep();
+  } while (
+      !(buttons_read() & BUTTONS_BTN1_MASK)); // Loop here until BTN1 pressed.
   // Stop all of the timers.
   intervalTimer_stop(INTERVAL_TIMER_TIMER_0);
   intervalTimer_stop(INTERVAL_TIMER_TIMER_1);
