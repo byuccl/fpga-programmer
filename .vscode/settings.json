@@ -2,8 +2,5 @@
     "[c]": {
         "editor.formatOnSave": true,
     },
-    "files.associations": {
-        "*.c": "cpp"
-    },
     "C_Cpp.clang_format_fallbackStyle": "LLVM"
 }
