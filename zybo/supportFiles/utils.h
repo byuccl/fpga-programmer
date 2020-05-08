@@ -10,5 +10,5 @@
 
 void utils_msDelay(long ms);
 void utils_microsecondDelay(long microSecondDelay);
-
+void utils_sleep();
 #endif /* UTILS_H_ */
