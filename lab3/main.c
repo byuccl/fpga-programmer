@@ -105,8 +105,6 @@ void milestone2() {
   // Now, test to see that all timers can be restarted multiple times.
   printf("Iterating over fixed delay tests\n\r");
   printf("Delays should approximately be: 1, 2, 3, 4 seconds.\n\r");
-  printf("Note that delays may be about 25%%-30%% lower if your compiler "
-         "optimizations are set to -O2 or -O3\n\r");
   for (int i = 0; i < TEST_ITERATION_COUNT; i++) {
     // Reset all the timers.
     intervalTimer_resetAll();
@@ -145,9 +143,7 @@ void milestone2() {
     intervalTimer_stop(INTERVAL_TIMER_TIMER_2);
     // Print the duration of all of the timers. The delays should be
     // approximately 1, 3, 6, and 10 seconds.
-    printf("Delays should approximately be: 1, 3, 6, 10 seconds keeping in "
-           "mind that you times may be lower due to compiler-optimization "
-           "settings.\n\r");
+    printf("Delays should approximately be: 1, 3, 6, 10 seconds.\n\r");
     printf("timer:(%d) duration:%f\n\r", INTERVAL_TIMER_TIMER_0,
            intervalTimer_getTotalDurationInSeconds(INTERVAL_TIMER_TIMER_0));
     printf("timer:(%d) duration:%f\n\r", INTERVAL_TIMER_TIMER_1,
