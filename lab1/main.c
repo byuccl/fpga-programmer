@@ -1,7 +1,7 @@
 
 // Print out "hello world" on both the console and the LCD screen.
 
-#include "supportFiles/display.h"
+#include "display.h"
 
 #include <stdio.h>
 int main() {

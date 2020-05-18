@@ -4,9 +4,11 @@
 #include "xil_io.h"
 #include "xparameters.h"
 
-#include "my_libs/buttons.h" // Modify this to reflect the location of your buttons.h
-#include "my_libs/intervalTimer.h" // Modify this to reflect the location of your intervalTimer.h
-#include "supportFiles/utils.h"
+#include "my_libs/buttons.h"
+#include "my_libs/intervalTimer.h"
+#include "utils.h"
+
+#define ROLLOVER_DELAY_IN_MS 45000
 
 #define TCR0_OFFSET 0x08 // register offset for TCR0
 #define TCR1_OFFSET 0x18 // register offset for TCR1
@@ -54,7 +56,7 @@ void milestone1() {
   // programmed the timer correctly.
   //  waitALongTime();
   printf("wait for awhile...\n");
-  utils_msDelay(44000);
+  utils_msDelay(ROLLOVER_DELAY_IN_MS);
   // Check lower register.
   printf("timer_0 TCR0 value after wait:%u\n\r",
          readTimer1Register(TCR0_OFFSET));

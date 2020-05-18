@@ -1,0 +1,36 @@
+language: c
+os: linux
+
+dist: bionic
+addons:
+  apt:
+    packages:
+      - qt5-default
+      - gcc-arm-none-eabi
+      - libnewlib-arm-none-eabi
+      - libstdc++-arm-none-eabi-newlib
+
+
+before_install:
+  # this will take care of deploying a newer cmake version
+  - sudo rm -rf /usr/local/cmake-*
+  - sudo apt purge --auto-remove cmake
+  - wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
+  - sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
+  - sudo apt update
+  - sudo apt install cmake
+  - cmake --version
+
+jobs:
+  include:
+    - name: build_emulator
+      script:
+        - cd build && cmake .. && make -j4
+
+    - name: build_zybo
+      script:
+        - cd build && cmake .. -DBOARD=1 && make -j4
+
+    - name: check_format
+      script:
+        - ./format.py --check

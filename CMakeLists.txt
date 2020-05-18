@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.14.5)
 
 project(ecen330)
 include_directories(.)
+include_directories(include)
 
 if (BOARD)
     # These are the options used to compile and run on the physical Zybo board    
@@ -11,15 +12,16 @@ if (BOARD)
     include(zybo/xil_arm_toolchain/toolchain.cmake)
 
     # Places to search for .h header files
-    include_directories(zybo)
-    include_directories(zybo/supportFiles)
     include_directories("zybo/xil_arm_toolchain/bsp/ps7_cortexa9_0/include")
 
     # link_directories instructs the compiler where it should look for libraries.
     link_directories(zybo/xil_arm_toolchain)
+    
+    # Set this variable to the name of libraries that board executables needs to link to
+    set(330_LIBS zybo)
 
-    # add_subdirectory runs another CMakeLists.txt in a subdirectory
-    add_subdirectory(zybo/supportFiles)
+    # Pass the BOARD variable to the compiler, so it can be used in #ifdef statements
+    add_compile_definitions(ZYBO_BOARD=1)
 
     # Set this variable to the path of the xilinx Vitis tool
     set(XIL_VITIS_PATH /opt/Xilinx/Vitis/2019.2)
@@ -30,17 +32,13 @@ else()
     include (emulator/emu.cmake)
 
     # Places to search for .h header files
-    include_directories(emulator)
-    include_directories(emulator/supportFiles)
+    include_directories(emulator/include)
 
     # link_directories instructs the compiler where it should look for libraries.
     link_directories(emulator)
 
-    # add_subdirectory runs another CMakeLists.txt in a subdirectory
-    add_subdirectory(emulator/supportFiles)
-
-     # Set this variable to the name of libraries that the emulator needs to link to
-    set(EMULATOR_LIBS emu Qt5Widgets Qt5Gui Qt5Core pthread)
+    # Set this variable to the name of libraries that the emulator needs to link to
+    set(330_LIBS emu Qt5Widgets Qt5Gui Qt5Core pthread)
 
     # Include this header file with all emulator builds
     add_definitions(-include emulator.h)
@@ -63,20 +61,34 @@ add_custom_command(TARGET BOOT.bin
 # Add commands to zip source files
 # -MM = must match (error if source file does not exist)
 # -j = junk paths (store all files flat in zip archive)
+
+add_custom_target(zipLab1)
+add_custom_command(TARGET zipLab1 COMMAND ../format.py)
+add_custom_command(TARGET zipLab1 COMMAND zip -MM -j ../lab1/\${USER}_lab1.zip ../lab1/main.c)
+
 add_custom_target(zipLab2)
-add_custom_command(TARGET zipLab2 COMMAND zip -MM -j ../lab2/\${USER}_lab2.zip ../lab2/main.c ../my_libs/switches.c ../my_libs/buttons.c ../lab2/CMakeLists.txt)
+add_custom_command(TARGET zipLab2 COMMAND ../format.py)
+add_custom_command(TARGET zipLab2 COMMAND zip -MM -j ../lab2/\${USER}_lab2.zip ../lab2/main.c ../my_libs/switches.c ../my_libs/buttons.c)
 
 add_custom_target(zipLab3)
-add_custom_command(TARGET zipLab3 COMMAND zip -MM -j ../lab3/\${USER}_lab3.zip ../lab3/main.c ../my_libs/intervalTimer.c ../lab3/CMakeLists.txt)
+add_custom_command(TARGET zipLab3 COMMAND ../format.py)
+add_custom_command(TARGET zipLab3 COMMAND zip -MM -j ../lab3/\${USER}_lab3.zip ../lab3/main.c ../my_libs/intervalTimer.c)
 
 add_custom_target(zipLab4)
-add_custom_command(TARGET zipLab4 COMMAND zip -MM -j ../lab4/\${USER}_lab4.zip ../lab4/clockControl.c ../lab4/clockDisplay.c ../lab4/CMakeLists.txt)
+add_custom_command(TARGET zipLab4 COMMAND ../format.py)
+add_custom_command(TARGET zipLab4 COMMAND zip -MM -j ../lab4/\${USER}_lab4.zip ../lab4/clockControl.c ../lab4/clockDisplay.c)
 
 add_custom_target(zipLab5)
-add_custom_command(TARGET zipLab5 COMMAND zip -MM -j ../lab5/\${USER}_lab5.zip ../lab5/minimax.c ../lab5/ticTacToeDisplay.c ../lab5/ticTacToeControl.c ../lab5/CMakeLists.txt)
+add_custom_command(TARGET zipLab5 COMMAND ../format.py)
+add_custom_command(TARGET zipLab5 COMMAND zip -MM -j ../lab5/\${USER}_lab5.zip ../lab5/minimax.c ../lab5/ticTacToeDisplay.c ../lab5/ticTacToeControl.c)
 
 add_custom_target(zipLab6)
-add_custom_command(TARGET zipLab6 COMMAND zip -MM -j ../lab6/\${USER}_lab6.zip ../lab6/buttonHandler.c ../lab6/flashSequence.c ../lab6/globals.c ../lab6/main.c ../lab6/simonControl.c ../lab6/simonDisplay.c ../lab6/verifySequence.c ../lab6/CMakeLists.txt)
+add_custom_command(TARGET zipLab6 COMMAND ../format.py)
+add_custom_command(TARGET zipLab6 COMMAND zip -MM -j ../lab6/\${USER}_lab6.zip ../lab6/buttonHandler.c ../lab6/flashSequence.c ../lab6/globals.c ../lab6/main.c ../lab6/simonControl.c ../lab6/simonDisplay.c ../lab6/verifySequence.c)
 
 add_custom_target(zipLab7)
-add_custom_command(TARGET zipLab7 COMMAND zip -MM -j ../lab7\${USER}_lab7.zip ../lab7/wamControl.c ../lab7/wamDisplay.c ../lab7/wamMain.c ../lab7/CMakeLists.txt)
+add_custom_command(TARGET zipLab7 COMMAND ../format.py)
+add_custom_command(TARGET zipLab7 COMMAND zip -MM -j ../lab7\${USER}_lab7.zip ../lab7/wamControl.c ../lab7/wamDisplay.c ../lab7/wamMain.c)
+
+add_custom_target(format)
+add_custom_command(TARGET format COMMAND ../format.py)
