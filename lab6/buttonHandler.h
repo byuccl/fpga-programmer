@@ -3,7 +3,8 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-// Get the simon region numbers. See the source code for the region numbering scheme.
+// Get the simon region numbers. See the source code for the region numbering
+// scheme.
 uint8_t buttonHandler_getRegionNumber();
 
 // Turn on the state machine. Part of the interlock.
@@ -12,16 +13,18 @@ void buttonHandler_enable();
 // Turn off the state machine. Part of the interlock.
 void buttonHandler_disable();
 
-// The only thing this function does is return a boolean flag set by the buttonHandler state machine. To wit:
-// Once enabled, the buttonHandler state-machine first waits for a touch. Once a touch is detected, the
-// buttonHandler state-machine computes the region-number for the touched area. Next, the buttonHandler
-// state-machine waits until the player removes their finger. At this point, the state-machine should
-// set a bool flag that indicates the the player has removed their finger. Once the buttonHandler() 
+// The only thing this function does is return a boolean flag set by the
+// buttonHandler state machine. To wit: Once enabled, the buttonHandler
+// state-machine first waits for a touch. Once a touch is detected, the
+// buttonHandler state-machine computes the region-number for the touched area.
+// Next, the buttonHandler state-machine waits until the player removes their
+// finger. At this point, the state-machine should set a bool flag that
+// indicates the the player has removed their finger. Once the buttonHandler()
 // state-machine is disabled, it should clear this flag.
-// All buttonHandler_releasedDetected() does is return the value of this flag. 
+// All buttonHandler_releasedDetected() does is return the value of this flag.
 // As such, the body of this function should only contain a single line of code.
-// If this function does more than return a boolean set by the buttonHandler state machine, you are going about
-// this incorrectly.
+// If this function does more than return a boolean set by the buttonHandler
+// state machine, you are going about this incorrectly.
 bool buttonHandler_releaseDetected();
 
 // Initialize the state machine

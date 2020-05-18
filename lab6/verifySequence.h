@@ -7,7 +7,8 @@
 // State machine will run when enabled.
 void verifySequence_enable();
 
-// This is part of the interlock. You disable the state-machine and then enable it again.
+// This is part of the interlock. You disable the state-machine and then enable
+// it again.
 void verifySequence_disable();
 
 // Used to detect if there has been a time-out error.
