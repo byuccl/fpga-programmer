@@ -15,6 +15,7 @@ if (BOARD)
     include_directories("zybo/xil_arm_toolchain/bsp/ps7_cortexa9_0/include")
 
     # link_directories instructs the compiler where it should look for libraries.
+    link_directories(zybo)
     link_directories(zybo/xil_arm_toolchain)
     
     # Set this variable to the name of libraries that board executables needs to link to
