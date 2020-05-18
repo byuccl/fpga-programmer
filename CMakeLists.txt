@@ -19,7 +19,7 @@ if (BOARD)
     link_directories(zybo/xil_arm_toolchain)
     
     # Set this variable to the name of libraries that board executables needs to link to
-    set(330_LIBS zybo)
+    set(330_LIBS c gcc zybo xil c)
 
     # Pass the BOARD variable to the compiler, so it can be used in #ifdef statements
     add_compile_definitions(ZYBO_BOARD=1)
