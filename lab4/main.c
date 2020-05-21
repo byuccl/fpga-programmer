@@ -67,6 +67,7 @@ int main() {
   // Initialization of the clock display is not time-dependent, do it outside of
   // the state machine.
   clockDisplay_init();
+  clockControl_init();
   // Start the private ARM timer running.
   interrupts_startArmPrivateTimer();
   // Enable interrupts at the ARM.
@@ -118,6 +119,7 @@ int main() {
   // Initialization of the clock display is not time-dependent, do it outside of
   // the state machine.
   clockDisplay_init();
+  clockControl_init();
   // Keep track of your personal interrupt count. Want to make sure that you
   // don't miss any interrupts.
   int32_t personalInterruptCount = 0;
