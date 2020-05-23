@@ -12,17 +12,13 @@
 #include <stdio.h>
 #include <time.h>
 
-
 #define MS_NANO_SECOND_MULTIPLIER 1000000
 #define NS_PER_SECOND 1000000000
-#define WAIT_TIME_IN_MS 10
+#define WAIT_TIME_IN_MS 1
 
 struct timespec requestedDelay;
 struct timespec remainingDelay;
 
-// This provides an accurate ms delay. Number was computed via experimentation
-// and measuDISPLAY_RED with the intervalTimer package.
-#define MS_LOOP_MULTIPLIER 55310
 void utils_msDelay(long msDelay) {
   // volatile int32_t i;
   // for (i=0; i<msDelay*MS_LOOP_MULTIPLIER; i++);

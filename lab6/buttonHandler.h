@@ -1,9 +1,17 @@
+/*
+ * buttonHandler.h
+ *
+ *  Created on: Oct 28, 2014
+ *      Author: hutch
+ */
+
 #ifndef BUTTONHANDLER_H_
 #define BUTTONHANDLER_H_
-
 #include <stdbool.h>
 #include <stdint.h>
-// Get the simon region numbers. See the source code for the region numbering scheme.
+
+// Get the simon region numbers. See the source code for the region numbering
+// scheme.
 uint8_t buttonHandler_getRegionNumber();
 
 // Turn on the state machine. Part of the interlock.
@@ -11,6 +19,9 @@ void buttonHandler_enable();
 
 // Turn off the state machine. Part of the interlock.
 void buttonHandler_disable();
+
+// Standard init function.
+void buttonHandler_init();
 
 // The only thing this function does is return a boolean flag set by the buttonHandler state machine. To wit:
 // Once enabled, the buttonHandler state-machine first waits for a touch. Once a touch is detected, the
@@ -24,11 +35,15 @@ void buttonHandler_disable();
 // this incorrectly.
 bool buttonHandler_releaseDetected();
 
-// Initialize the state machine
-void buttonHandler_init();
+// Let's you know that the buttonHander is waiting in the interlock state.
+bool buttonHandler_isComplete();
 
 // Standard tick function.
 void buttonHandler_tick();
+
+// Allows an external controller to notify the buttonHandler that a time-out has
+// occurred.
+void buttonHandler_timeOutOccurred();
 
 // This tests the functionality of the buttonHandler state machine.
 // buttonHandler_runTest(int16_t touchCount) runs the test until
