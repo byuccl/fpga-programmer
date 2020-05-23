@@ -7,8 +7,9 @@
 // Call this before using any wamControl_ functions.
 void wamControl_init();
 
-// Call this to set how much time is consumed by each tick of the controlling state machine.
-// This information makes it possible to set the awake and sleep time of moles in ms, not ticks.
+// Call this to set how much time is consumed by each tick of the controlling
+// state machine. This information makes it possible to set the awake and sleep
+// time of moles in ms, not ticks.
 void wamControl_setMsPerTick(uint16_t msPerTick);
 
 // This returns the time consumed by each tick of the controlling state machine.
@@ -17,10 +18,12 @@ uint16_t wamControl_getMsPerTick();
 // Standard tick function.
 void wamControl_tick();
 
-// Returns a random value that indicates how long the mole should sleep before awaking.
+// Returns a random value that indicates how long the mole should sleep before
+// awaking.
 wamDisplay_moleTickCount_t wamControl_getRandomMoleAsleepInterval();
 
-// Returns a random value that indicates how long the mole should stay awake before going dormant.
+// Returns a random value that indicates how long the mole should stay awake
+// before going dormant.
 wamDisplay_moleTickCount_t wamControl_getRandomMoleAwakeInterval();
 
 // Set the maximum number of active moles.

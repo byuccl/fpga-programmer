@@ -14,8 +14,8 @@
   1000 // Make it big so you can use it for a splash screen.
 
 // This is the length of the complete sequence at maximum length.
-// You must copy the contents of the sequence[] array into the global variable that you maintain.
-// Do not just grab the pointer as this will fail.
+// You must copy the contents of the sequence[] array into the global variable
+// that you maintain. Do not just grab the pointer as this will fail.
 void globals_setSequence(const uint8_t sequence[], uint16_t length);
 
 // This returns the value of the sequence at the index.
@@ -27,7 +27,7 @@ uint16_t globals_getSequenceLength();
 // This is the length of the sequence that you are currently working on.
 void globals_setSequenceIterationLength(uint16_t length);
 
-// This is the length of the sequence that you are currently working on, 
+// This is the length of the sequence that you are currently working on,
 // not the maximum length but the interim length as
 // the person playing the game works through the pattern one color at a time.
 uint16_t globals_getSequenceIterationLength();
