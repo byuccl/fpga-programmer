@@ -18,7 +18,6 @@
 #include "supportFiles/utils.h"
 #include "verifySequence.h"
 #include "vsTester.h"
-#include "winScreen.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <xparameters.h>
