@@ -14,17 +14,18 @@
 #include <stdint.h>
 
 // Used to indicate status that can be checked after invoking the function.
-typedef uint32_t intervalTimer_status_t;  // Use this type for the return type of a function.
+typedef uint32_t
+    intervalTimer_status_t; // Use this type for the return type of a function.
 
-#define INTERVAL_TIMER_STATUS_OK 1        // Return this status if successful.
-#define INTERVAL_TIMER_STATUS_FAIL 0      // Return this status if failure.
+#define INTERVAL_TIMER_STATUS_OK 1   // Return this status if successful.
+#define INTERVAL_TIMER_STATUS_FAIL 0 // Return this status if failure.
 
 #define INTERVAL_TIMER_TIMER_0 0
 #define INTERVAL_TIMER_TIMER_1 1
 #define INTERVAL_TIMER_TIMER_2 2
 
 // You must initialize the timers before you use them the first time.
-// It is generally only called once but should not cause an error if it 
+// It is generally only called once but should not cause an error if it
 // is called multiple times.
 // timerNumber indicates which timer should be initialized.
 // returns INTERVAL_TIMER_STATUS_OK if successful, some other value otherwise.
@@ -65,9 +66,8 @@ intervalTimer_status_t intervalTimer_testAll();
 
 // Use this function to ascertain how long a given timer has been running.
 // Note that it should not be an error to call this function on a running timer
-// though it usually makes more sense to call this after intervalTimer_stop() has
-// been called.
-// The timerNumber argument determines which timer is read.
+// though it usually makes more sense to call this after intervalTimer_stop()
+// has been called. The timerNumber argument determines which timer is read.
 double intervalTimer_getTotalDurationInSeconds(uint32_t timerNumber);
 
 #endif /* INTERVALTIMER_H_ */
