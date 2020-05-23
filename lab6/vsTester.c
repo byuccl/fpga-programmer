@@ -17,6 +17,7 @@
 #define BUTTON_1 1 // Index for button 1
 #define BUTTON_2 2 // Index for button 2
 #define BUTTON_3 3 // Index for button 3
+
 // Prints the instructions that the user should follow when
 // testing the verifySequence state machine.
 // Takes an argument that specifies the length of the sequence so that
@@ -61,10 +62,12 @@ void vsTester_printInstructions(uint8_t length, bool draw) {
 // Just clears the screen and draws the four buttons used in Simon.
 void vsTester_drawButtons() {
   //  display_fillScreen(DISPLAY_BLACK); // Clear the screen.
-  simonDisplay_drawButton(BUTTON_0); // Draw the four buttons.
-  simonDisplay_drawButton(BUTTON_1);
-  simonDisplay_drawButton(BUTTON_2);
-  simonDisplay_drawButton(BUTTON_3);
+
+  // Draw the four buttons.
+  simonDisplay_drawButton(BUTTON_0, SIMON_DISPLAY_DRAW_BUTTON);
+  simonDisplay_drawButton(BUTTON_1, SIMON_DISPLAY_DRAW_BUTTON);
+  simonDisplay_drawButton(BUTTON_2, SIMON_DISPLAY_DRAW_BUTTON);
+  simonDisplay_drawButton(BUTTON_3, SIMON_DISPLAY_DRAW_BUTTON);
 }
 
 // This will set the sequence to a simple sequential pattern.

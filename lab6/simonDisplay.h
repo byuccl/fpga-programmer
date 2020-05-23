@@ -49,6 +49,10 @@
 // Number of touchable regions.
 #define SIMON_DISPLAY_REGION_COUNT 4
 
+// Passed to simonDisplay_drawButton to indicate drawing or erasing
+#define SIMON_DISPLAY_DRAW_BUTTON 0
+#define SIMON_DISPLAY_ERASE_BUTTON 1
+
 int8_t simonDisplay_computeRegionNumber(int16_t x, int16_t y);
 
 // Draws a colored "button" that the user can touch.
@@ -63,7 +67,8 @@ void simonDisplay_drawAllButtons();
 void simonDisplay_eraseAllButtons();
 
 // Draws a bigger square that completely fills the region.
-// If the erase argument is true, it draws the square as black background to "erase" it.
+// If the erase argument is true, it draws the square as black background to
+// "erase" it.
 void simonDisplay_drawSquare(uint8_t regionNo, bool erase);
 
 // Runs a brief demonstration of how buttons can be pressed and squares lit up
