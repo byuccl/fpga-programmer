@@ -50,8 +50,8 @@
 #define SIMON_DISPLAY_REGION_COUNT 4
 
 // Passed to simonDisplay_drawButton to indicate drawing or erasing
-#define SIMON_DISPLAY_DRAW_BUTTON 0
-#define SIMON_DISPLAY_ERASE_BUTTON 1
+#define SIMON_DISPLAY_DRAW 0
+#define SIMON_DISPLAY_ERASE 1
 
 int8_t simonDisplay_computeRegionNumber(int16_t x, int16_t y);
 

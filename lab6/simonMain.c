@@ -5,6 +5,10 @@
  *      Author: hutch
  */
 
+// Uncomment this line if you are the instructor and
+// have the code for winScreen.c installed.
+//#define INSTRUCTOR_VERSION
+
 #include "bhTester.h"
 #include "buttonHandler.h"
 #include "flashSequence.h"
@@ -21,6 +25,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <xparameters.h>
+
+#ifdef INSTRUCTOR_VERSION
+#include "winScreen.h"
+#endif
 
 // Tick Period in ms. Adjust as necessary.
 #define TIMER_PERIOD 100.0E-3
@@ -77,10 +85,10 @@ static void tickTimer(functionPointer_t *fp, const char *functionName) {
 /****************************************************************/
 
 //#define RUN_PROGRAM NOTHING
-#define RUN_PROGRAM BUTTON_HANDLER_TEST
+//#define RUN_PROGRAM BUTTON_HANDLER_TEST
 //#define RUN_PROGRAM FLASH_SEQUENCE_TEST
 //#define RUN_PROGRAM VERIFY_SEQUENCE_TEST
-//#define RUN_PROGRAM SIMON_GAME
+#define RUN_PROGRAM SIMON_GAME
 
 /****************************** RUN_BUTTON_HANDLER_TEST ****************/
 #if RUN_PROGRAM == BUTTON_HANDLER_TEST
@@ -132,7 +140,9 @@ static void test_init() {
   buttonHandler_init();
   flashSequence_init();
   verifySequence_init();
+#ifdef INSTRUCTOR_VERSION
   winScreen_init();
+#endif
   display_fillScreen(DISPLAY_BLACK);
   simonControl_enable();
   printf("Running the simon game.\n");
@@ -143,7 +153,9 @@ void isr_function() {
   buttonHandler_tick();
   flashSequence_tick();
   verifySequence_tick();
+#ifdef INSTRUCTOR_VERSION
   winScreen_tick();
+#endif
 }
 /*************************** RUN NOTHINER *********************/
 #elif RUN_PROGRAM == NOTHING

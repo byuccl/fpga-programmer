@@ -64,10 +64,10 @@ void vsTester_drawButtons() {
   //  display_fillScreen(DISPLAY_BLACK); // Clear the screen.
 
   // Draw the four buttons.
-  simonDisplay_drawButton(BUTTON_0, SIMON_DISPLAY_DRAW_BUTTON);
-  simonDisplay_drawButton(BUTTON_1, SIMON_DISPLAY_DRAW_BUTTON);
-  simonDisplay_drawButton(BUTTON_2, SIMON_DISPLAY_DRAW_BUTTON);
-  simonDisplay_drawButton(BUTTON_3, SIMON_DISPLAY_DRAW_BUTTON);
+  simonDisplay_drawButton(BUTTON_0, SIMON_DISPLAY_DRAW);
+  simonDisplay_drawButton(BUTTON_1, SIMON_DISPLAY_DRAW);
+  simonDisplay_drawButton(BUTTON_2, SIMON_DISPLAY_DRAW);
+  simonDisplay_drawButton(BUTTON_3, SIMON_DISPLAY_DRAW);
 }
 
 // This will set the sequence to a simple sequential pattern.
