@@ -48,10 +48,11 @@ void fsTester_init() {
   flashSequence_init();                   // obligatory init.
   // Set the provided test sequence.
   globals_setSequence(flashSequence_testSequence, TEST_SEQUENCE_LENGTH);
-  sequenceLength = 1; // Start with the first element of the sequence.
-  fsTester_currentState =
-      fsTester_init_st; // State machine starts in this state.
-  //  simonDisplay_drawAllButtons();
+  // Start with the first element of the sequence.
+  sequenceLength = 1;
+  globals_setSequenceIterationLength(sequenceLength);
+  // State machine starts in this state.
+  fsTester_currentState = fsTester_init_st;
 }
 
 // print incrementing message if flag is true, erase if false.
@@ -87,10 +88,9 @@ void fsTester_tick() {
         // Set the cursor position.
         display_setCursor(TEXT_ORIGIN_X, TEXT_ORIGIN_Y);
         // Print the ending message.
-        display_setTextColorBg(DISPLAY_WHITE, DISPLAY_BLACK);
+        display_setTextColor(DISPLAY_WHITE);
         display_println(RUN_TEST_COMPLETE_MESSAGE);
       } else {
-        //        flashSequence_printIncrementingMessage();
         // Set the length of the pattern.
         globals_setSequenceIterationLength(sequenceLength);
         fsTester_currentState = fsTester_msgDelay_st; // No, keep going.
