@@ -88,7 +88,7 @@ static void tickTimer(functionPointer_t *fp, const char *functionName) {
 //#define RUN_PROGRAM BUTTON_HANDLER_TEST
 //#define RUN_PROGRAM FLASH_SEQUENCE_TEST
 //#define RUN_PROGRAM VERIFY_SEQUENCE_TEST
-#define RUN_PROGRAM SIMON_GAME
+// #define RUN_PROGRAM SIMON_GAME
 
 /****************************** RUN_BUTTON_HANDLER_TEST ****************/
 #if RUN_PROGRAM == BUTTON_HANDLER_TEST
