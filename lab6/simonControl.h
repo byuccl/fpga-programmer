@@ -8,6 +8,9 @@
 #ifndef SIMONCONTROL_H_
 #define SIMONCONTROL_H_
 
+#include <stdbool.h>
+#include <stdint.h>
+
 // Used to init the state machine. Always provided though it may not be
 // necessary.
 void simonControl_init();
