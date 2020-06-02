@@ -1,3 +1,10 @@
+/*
+ * globals.h
+ *
+ *  Created on: Oct 28, 2014
+ *      Author: hutch
+ */
+
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
 
@@ -5,6 +12,9 @@
   1000 // Make it big so you can use it for a splash screen.
 
 #include <stdint.h>
+
+#define GLOBALS_MAX_FLASH_SEQUENCE                                             \
+  1000 // Make it big so you can use it for a splash screen.
 
 // This is the length of the complete sequence at maximum length.
 // You must copy the contents of the sequence[] array into the global variable

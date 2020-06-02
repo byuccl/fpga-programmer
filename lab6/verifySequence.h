@@ -1,3 +1,10 @@
+/*
+ * verifySequence.h
+ *
+ *  Created on: Oct 28, 2014
+ *      Author: hutch
+ */
+
 #ifndef VERIFYSEQUENCE_H_
 #define VERIFYSEQUENCE_H_
 
@@ -11,6 +18,9 @@ void verifySequence_enable();
 // it again.
 void verifySequence_disable();
 
+// Standard init function.
+void verifySequence_init();
+
 // Used to detect if there has been a time-out error.
 bool verifySequence_isTimeOutError();
 
@@ -19,9 +29,6 @@ bool verifySequence_isUserInputError();
 
 // Used to detect if the verifySequence state machine has finished verifying.
 bool verifySequence_isComplete();
-
-// Initialize the state machine
-void verifySequence_init();
 
 // Standard tick function.
 void verifySequence_tick();

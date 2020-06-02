@@ -16,12 +16,12 @@ void flashSequence_enable();
 // Turns off the state machine. Part of the interlock.
 void flashSequence_disable();
 
+// Standard init function.
+void flashSequence_init();
+
 // Other state machines can call this to determine if this state machine is
 // finished.
 bool flashSequence_isComplete();
-
-// Initialize the state machine
-void flashSequence_init();
 
 // Standard tick function.
 void flashSequence_tick();
