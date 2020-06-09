@@ -1,13 +1,13 @@
+#include "my_libs/buttons.h"
+#include "my_libs/intervalTimer.h"
+#include "my_libs/switches.h"
 #include "supportFiles/display.h"
 #include "supportFiles/interrupts.h"
 #include "supportFiles/leds.h"
 #include "supportFiles/utils.h"
+#include "utils.h"
 #include "wamControl.h"
 #include "wamDisplay.h"
-
-#include "my_libs/buttons.h" // Modify as necessary to point to your buttons.h
-#include "my_libs/intervalTimer.h" // Modify as necessary to point to your intervalTimer.h
-#include "my_libs/switches.h" // Modify as necessary to point to your switches.h
 #include <stdio.h>
 #include <xparameters.h>
 
@@ -85,6 +85,7 @@ int main() {
     wamControl_init();             // Initialize the WAM controller.
     while (!display_isTouched()) { // Wait for the user to touch the screen.
       randomSeed++;                // Increment a random seed while you wait.
+      utils_sleep();
     }
     while (display_isTouched())
       ; // Now wait for the user to remove their finger.
@@ -99,18 +100,20 @@ int main() {
         personalInterruptCount++;     // Count interrupts.
         wamControl_tick();            // tick the WAM controller.
       }
+      utils_sleep();
     }
     interrupts_disableArmInts(); // Game is over, turn off interrupts.
     // Print out the interrupt counts to ensure that you didn't miss any
     // interrupts.
-    printf("isr invocation count: %ld\n\r", interrupts_isrInvocationCount());
-    printf("internal interrupt count: %ld\n\r", personalInterruptCount);
+    printf("isr invocation count: %d\n\r", interrupts_isrInvocationCount());
+    printf("internal interrupt count: %d\n\r", personalInterruptCount);
     wamDisplay_drawGameOverScreen(); // Draw the game-over screen.
     while (!display_isTouched())
       ; // Wait here until the user touches the screen to try again.
     wamDisplay_resetAllScoresAndLevel(); // Reset all game statistics so you can
                                          // start over.
   }
+  utils_sleep();
 }
 
 void isr_function() {
