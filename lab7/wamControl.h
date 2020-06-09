@@ -38,6 +38,12 @@ void wamControl_setRandomSeed(uint32_t seed);
 // Set the maximum number of misses until the game is over.
 void wamControl_setMaxMissCount(uint16_t missCount);
 
+// Enable the state machine (interlock).
+void wamControl_enable();
+
+// Disable the state machine (interlock).
+void wamControl_disable();
+
 // Use this predicate to see if the game is finished.
 bool wamControl_isGameOver();
 
