@@ -79,4 +79,4 @@ add_custom_target(zipLab6)
 add_custom_command(TARGET zipLab6 COMMAND zip -MM -j ../lab6/\${USER}_lab6.zip ../lab6/buttonHandler.c ../lab6/flashSequence.c ../lab6/globals.c ../lab6/main.c ../lab6/simonControl.c ../lab6/simonDisplay.c ../lab6/verifySequence.c ../lab6/CMakeLists.txt)
 
 add_custom_target(zipLab7)
-add_custom_command(TARGET zipLab7 COMMAND zip -MM -j ../lab7\${USER}_lab7.zip ../lab7/wamControl.c ../lab7/wamDisplay.c ../lab7/wamMain.c ../lab7/CMakeLists.txt)
+add_custom_command(TARGET zipLab7 COMMAND zip -MM -j ../lab7/\${USER}_lab7.zip ../lab7/wamControl.c ../lab7/wamDisplay.c ../lab7/wamMain.c ../lab7/CMakeLists.txt)
