@@ -90,6 +90,9 @@ int main() {
   randomSeed = 0;
   utils_msDelay(500);
   interrupts_enableArmInts();
+  while (1) {
+    utils_sleep();
+  }
 }
 
 void wamMain_tick() {
