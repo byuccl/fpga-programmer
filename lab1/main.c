@@ -11,7 +11,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 
 // Print out "hello world" on both the console and the LCD screen.
 
-#include "supportFiles/display.h"
+#include "display.h"
 
 #define TEXT_SIZE 2
 #define CURSOR_X 0

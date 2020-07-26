@@ -12,6 +12,9 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
 
+#define GLOBALS_MAX_FLASH_SEQUENCE                                             \
+  1000 // Make it big so you can use it for a splash screen.
+
 #include <stdint.h>
 
 #define GLOBALS_MAX_FLASH_SEQUENCE                                             \
