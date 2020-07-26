@@ -18,6 +18,7 @@ uint16_t touchCount;
 #define DISPLAY_Y_CENTER (DISPLAY_HEIGHT / 2)
 #define TEXT_SIZE 3
 
+// Init the button handler test state machine
 void bhTester_init() {
   display_init();
   buttonHandler_init();
@@ -27,8 +28,11 @@ void bhTester_init() {
   simonDisplay_drawAllButtons();
 }
 
+// Tick the button handler test state machine
 void bhTester_tick() {
   static uint8_t lastRegionNumber = 0;
+
+  // SM actions and transitions
   switch (bhTester_currentState) {
   case bhTester_init_st:
     buttonHandler_enable();

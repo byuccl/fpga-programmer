@@ -18,6 +18,10 @@ uint32_t readTimer1Register(uint32_t registerOffset) {
   return Xil_In32(address);          // Read the register at that address.
 }
 
+#define SHORT_DELAY 10
+#define DELAY_ROLLOVER 44000
+
+// Milestone 1 test
 void milestone1() {
   printf("=============== Starting milestone 1 ===============\n\r");
   intervalTimer_init(INTERVAL_TIMER_TIMER_0);  // Init timer 0.
@@ -34,19 +38,19 @@ void milestone1() {
   printf("The following register values should be changing while reading "
          "them.\n\r");
   // Just checking multiple times to see if the timer is running.
-  utils_msDelay(10);
+  utils_msDelay(SHORT_DELAY);
   printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
-  utils_msDelay(10);
+  utils_msDelay(SHORT_DELAY);
   printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
-  utils_msDelay(10);
+  utils_msDelay(SHORT_DELAY);
   printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
-  utils_msDelay(10);
+  utils_msDelay(SHORT_DELAY);
   printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
-  utils_msDelay(10);
+  utils_msDelay(SHORT_DELAY);
   printf("timer_0 TCR0 should be changing at this point:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
   // Wait about 2 minutes so that you roll over to TCR1.
@@ -54,7 +58,7 @@ void milestone1() {
   // programmed the timer correctly.
   //  waitALongTime();
   printf("wait for awhile...\n");
-  utils_msDelay(44000);
+  utils_msDelay(DELAY_ROLLOVER);
   // Check lower register.
   printf("timer_0 TCR0 value after wait:%u\n\r",
          readTimer1Register(TCR0_OFFSET));
@@ -65,6 +69,8 @@ void milestone1() {
 
 #define TEST_ITERATION_COUNT 4
 #define ONE_SECOND_DELAY 1000
+
+// Mileston 2 test function
 void milestone2() {
   printf("=============== Starting milestone 2 ===============\n\r");
   double duration0, duration1,
@@ -105,7 +111,7 @@ void milestone2() {
   // Now, test to see that all timers can be restarted multiple times.
   printf("Iterating over fixed delay tests\n\r");
   printf("Delays should approximately be: 1, 2, 3, 4 seconds.\n\r");
-  for (int i = 0; i < TEST_ITERATION_COUNT; i++) {
+  for (int8_t i = 0; i < TEST_ITERATION_COUNT; i++) {
     // Reset all the timers.
     intervalTimer_resetAll();
     // Start all the timers.
@@ -130,7 +136,7 @@ void milestone2() {
   // Now, test for increment timing (start-stop-start-stop...)
   // Reset all the timers.
   intervalTimer_resetAll();
-  for (int i = 0; i < TEST_ITERATION_COUNT; i++) {
+  for (int8_t i = 0; i < TEST_ITERATION_COUNT; i++) {
     // Start all the timers.
     intervalTimer_start(INTERVAL_TIMER_TIMER_0);
     intervalTimer_start(INTERVAL_TIMER_TIMER_1);
@@ -161,4 +167,5 @@ int main() {
   milestone2(); // Execute milestone 2
 }
 
+// Interrupt Routine
 void isr_function() {}

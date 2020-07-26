@@ -67,6 +67,8 @@ static void fsTester_printIncrementMessage(bool draw) {
 
 #define DRAW_MESSAGE true
 #define ERASE_MESSAGE false
+
+// tick the flash sequence test state machine
 void fsTester_tick() {
   // transition.
   switch (fsTester_currentState) {
