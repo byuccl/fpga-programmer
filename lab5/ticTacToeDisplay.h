@@ -1,6 +1,3 @@
-#ifndef TICTACTOEDISPLAY_H
-#define TICTACTOEDISPLAY_H
-
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -31,5 +28,3 @@ void ticTacToeDisplay_runTest();
 
 // This will draw the four board lines.
 void ticTacToeDisplay_drawBoardLines();
-
-#endif
