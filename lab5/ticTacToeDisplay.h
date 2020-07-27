@@ -9,6 +9,9 @@ source code for personal or educational use.
 For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 */
 
+#ifndef TICTACTOEDISPLAY_H_
+#define TICTACTOEDISPLAY_H_
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -39,3 +42,5 @@ void ticTacToeDisplay_runTest();
 
 // This will draw the four board lines.
 void ticTacToeDisplay_drawBoardLines();
+
+#endif /* TICTACTOEDISPLAY_H_ */

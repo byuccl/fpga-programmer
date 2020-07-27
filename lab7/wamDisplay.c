@@ -10,11 +10,14 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 */
 
 #include "wamDisplay.h"
-#include "supportFiles/display.h"
-#include "wamControl.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "display.h"
+#include "wamControl.h"
+
 
 /********************** typedefs **********************/
 // This keeps track of all mole information.

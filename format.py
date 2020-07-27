@@ -13,17 +13,24 @@ extensions_to_format = [".c", ".h"]
 
 dirs_to_exclude_from_all = ["build/", "hw/", "zybo/xil_arm_toolchain/bsp"]
 
+
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action='store_true', help = "Check that all files are formatted, and error otherwise.")
-    parser.add_argument("--all", action='store_true', help = "Match against all files, not just the student files.")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Check that all files are formatted, and error otherwise.",
+    )
+    parser.add_argument(
+        "--all", action="store_true", help="Match against all files, not just the student files."
+    )
     args = parser.parse_args()
 
     dirs_matched = []
 
     # Loop through all items in tree, and find directories that match any regex in 'dirs_to_format'
-    for d in repo_root_dir.glob('**'):
+    for d in repo_root_dir.glob("**"):
         if not d.is_dir():
             continue
 
@@ -48,15 +55,19 @@ def main():
     # Find all files in matched directories with a matching extension and format them
     num_formatted = 0
     for d in dirs_matched:
-        for ext in extensions_to_format:            
-            for f in d.glob('*' + ext):
+        for ext in extensions_to_format:
+            for f in d.glob("*" + ext):
 
-                # The first command performs a diff on the original file and the 
+                # The first command performs a diff on the original file and the
                 # clang-format output to see if clang-format will change anything
-                diff_cmd = ['/bin/bash', '-c', "diff -u <(cat " + str(f) + ") <(clang-format " + str(f) + ")"]
-                p = subprocess.Popen(diff_cmd, stdout = subprocess.PIPE)
+                diff_cmd = [
+                    "/bin/bash",
+                    "-c",
+                    "diff -u <(cat " + str(f) + ") <(clang-format " + str(f) + ")",
+                ]
+                p = subprocess.Popen(diff_cmd, stdout=subprocess.PIPE)
                 stdout = p.communicate()[0]
-                
+
                 # If there is any difference, format, or error if the --check option is set
                 if len(stdout):
                     if args.check:
@@ -68,9 +79,10 @@ def main():
                     subprocess.run(cmd)
 
                     num_formatted += 1
-    
+
     if num_formatted == 0:
         print("Nothing needs formatting.")
+
 
 if __name__ == "__main__":
     main()

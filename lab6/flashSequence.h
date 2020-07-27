@@ -30,7 +30,4 @@ bool flashSequence_isComplete();
 // Standard tick function.
 void flashSequence_tick();
 
-// Tests the flashSequence state machine.
-void flashSequence_runTest();
-
 #endif /* FLASHSEQUENCE_H_ */

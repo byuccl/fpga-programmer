@@ -9,17 +9,17 @@ source code for personal or educational use.
 For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 */
 
-#include "clockControl.h"
-#include "clockDisplay.h"
-#include "supportFiles/display.h"
-#include "supportFiles/globalTimer.h"
-#include "supportFiles/interrupts.h"
-#include "supportFiles/leds.h"
-#include "supportFiles/utils.h"
-#include "xparameters.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+
+#include "clockControl.h"
+#include "clockDisplay.h"
+#include "display.h"
+#include "interrupts.h"
+#include "leds.h"
+#include "utils.h"
+#include "xparameters.h"
 
 #define ISR_INVOCATION_MESSAGE "Running the clock lab using isr_function()\n"
 #define FLAG_INVOCATION_MESSAGE "Running the clock lab using the flag method\n"
@@ -118,7 +118,6 @@ int main() {
   // = true.
   interrupts_initAll(true);
   interrupts_setPrivateTimerLoadValue(TIMER_LOAD_VALUE);
-  u32 privateTimerTicksPerSecond = interrupts_getPrivateTimerTicksPerSecond();
   interrupts_enableTimerGlobalInts();
   // Initialization of the clock display is not time-dependent, do it outside of
   // the state machine.
@@ -137,7 +136,7 @@ int main() {
       personalInterruptCount++;
       clockControl_tick();
       interrupts_isrFlagGlobal = 0;
-      if (personalInterruptCount == MAX_INTERRUPT_COUNT)
+      if (personalInterruptCount >= MAX_INTERRUPT_COUNT)
         break;
       utils_sleep();
     }

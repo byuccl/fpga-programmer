@@ -37,7 +37,4 @@ bool verifySequence_isComplete();
 // Standard tick function.
 void verifySequence_tick();
 
-// Standard runTest function.
-void verifySequence_runTest();
-
 #endif /* VERIFYSEQUENCE_H_ */

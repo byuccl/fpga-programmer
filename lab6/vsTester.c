@@ -10,14 +10,16 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 */
 
 #include "vsTester.h"
+
+#include <stdbool.h>
+#include <stdint.h>
+
 #include "buttonHandler.h"
+#include "display.h"
 #include "flashSequence.h"
 #include "globals.h"
 #include "simonDisplay.h"
-#include "supportFiles/display.h"
 #include "verifySequence.h"
-#include <stdbool.h>
-#include <stdint.h>
 
 #define MESSAGE_X 0
 //#define MESSAGE_Y (display_width()/4)
@@ -36,7 +38,6 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 // This assumes a simple incrementing pattern so that it is simple to
 // instruct the user.
 void vsTester_printInstructions(uint8_t length, bool draw) {
-  //  display_fillScreen(DISPLAY_BLACK);       // Clear the screen.
   static uint8_t prevLengthValue = 0;
   if (draw) {
     display_setTextColor(DISPLAY_WHITE);
@@ -72,8 +73,6 @@ void vsTester_printInstructions(uint8_t length, bool draw) {
 
 // Just clears the screen and draws the four buttons used in Simon.
 void vsTester_drawButtons() {
-  //  display_fillScreen(DISPLAY_BLACK); // Clear the screen.
-
   // Draw the four buttons.
   simonDisplay_drawButton(BUTTON_0, SIMON_DISPLAY_DRAW);
   simonDisplay_drawButton(BUTTON_1, SIMON_DISPLAY_DRAW);
@@ -116,25 +115,17 @@ void vsTester_printInfoMessage(vsTester_infoMessage_t messageType, bool draw) {
     messageType = prevType; // Overwrite messageType for erase.
   }
   display_setCursor(MESSAGE_X, MESSAGE_Y);
-  //  display_fillScreen(DISPLAY_BLACK);
   vsTester_infoMessage_t previousType;
   switch (messageType) {
   case user_time_out_e: // Tell the user that they typed too slowly.
     display_print("Error: too slow.");
-    // display_print("\n");
-    // display_println("  User tapped sequence");
-    // display_println("  too slowly.");
     break;
   case user_wrong_sequence_e: // Tell the user that they tapped the wrong
                               // color.
     display_print("Error: wrong color.");
-    // display_print("\n");
-    // display_println("  User tapped the");
-    // display_println("  wrong sequence.");
     break;
   case user_correct_sequence_e: // Tell the user that they were correct.
     display_print("Correct.");
-    // display_println("the correct sequence.");
     break;
   case user_quit_e: // Acknowledge that you are quitting the test.
     display_print("Quitting.");

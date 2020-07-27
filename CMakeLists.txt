@@ -4,6 +4,10 @@ project(ecen330)
 include_directories(.)
 include_directories(include)
 
+add_compile_options(-Wall -Wextra -pedantic)
+# add_compile_options(-Wall -Wextra -pedantic -Werror)
+
+
 if (BOARD)
     # These are the options used to compile and run on the physical Zybo board    
     # You will need to compile using "cmake -DBOARD=1"

@@ -12,6 +12,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #ifndef MINIMAX_H_
 #define MINIMAX_H_
 
+#include <stdbool.h>
 #include <stdint.h>
 
 // Defines the boundaries of the tic-tac-toe board.

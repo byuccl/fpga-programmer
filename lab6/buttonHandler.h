@@ -11,8 +11,10 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 
 #ifndef BUTTONHANDLER_H_
 #define BUTTONHANDLER_H_
+
 #include <stdbool.h>
 #include <stdint.h>
+
 // Get the simon region numbers. See the source code for the region numbering
 // scheme.
 uint8_t buttonHandler_getRegionNumber();
@@ -49,13 +51,5 @@ void buttonHandler_tick();
 // Allows an external controller to notify the buttonHandler that a time-out has
 // occurred.
 void buttonHandler_timeOutOccurred();
-
-// This tests the functionality of the buttonHandler state machine.
-// buttonHandler_runTest(int16_t touchCount) runs the test until
-// the user has touched the screen touchCount times. It indicates
-// that a button was pushed by drawing a large square while
-// the button is pressed and then erasing the large square and
-// redrawing the button when the user releases their touch.
-void buttonHandler_runTest(int16_t touchCount);
 
 #endif /* BUTTONHANDLER_H_ */

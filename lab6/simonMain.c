@@ -13,22 +13,23 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 // have the code for winScreen.c installed.
 //#define INSTRUCTOR_VERSION
 
-#include "bhTester.h"
-#include "buttonHandler.h"
-#include "flashSequence.h"
-#include "fsTester.h"
-#include "my_libs/intervalTimer.h"
-#include "simonControl.h"
-#include "simonDisplay.h"
-#include "supportFiles/display.h"
-#include "supportFiles/interrupts.h"
-#include "supportFiles/leds.h"
-#include "supportFiles/utils.h"
-#include "verifySequence.h"
-#include "vsTester.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <xparameters.h>
+
+#include "bhTester.h"
+#include "buttonHandler.h"
+#include "display.h"
+#include "flashSequence.h"
+#include "fsTester.h"
+#include "interrupts.h"
+#include "leds.h"
+#include "my_libs/intervalTimer.h"
+#include "simonControl.h"
+#include "simonDisplay.h"
+#include "utils.h"
+#include "verifySequence.h"
+#include "vsTester.h"
 
 #ifdef INSTRUCTOR_VERSION
 #include "winScreen.h"
@@ -92,7 +93,7 @@ static void tickTimer(functionPointer_t *fp, const char *functionName) {
 //#define RUN_PROGRAM BUTTON_HANDLER_TEST
 //#define RUN_PROGRAM FLASH_SEQUENCE_TEST
 //#define RUN_PROGRAM VERIFY_SEQUENCE_TEST
-// #define RUN_PROGRAM SIMON_GAME
+//#define RUN_PROGRAM SIMON_GAME
 
 /****************************** RUN_BUTTON_HANDLER_TEST ****************/
 #if RUN_PROGRAM == BUTTON_HANDLER_TEST

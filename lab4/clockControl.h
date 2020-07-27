@@ -16,4 +16,5 @@ void clockControl_tick();
 
 // Call this before you call clockControl_tick().
 void clockControl_init();
-#endif
+
+#endif /* CLOCKCONTROL_H */

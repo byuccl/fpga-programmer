@@ -9,13 +9,16 @@ source code for personal or educational use.
 For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 */
 
+#include "fsTester.h"
+
+#include <stdint.h>
+#include <stdio.h>
+
+#include "display.h"
 #include "flashSequence.h"
 #include "globals.h"
 #include "simonDisplay.h"
-#include "supportFiles/display.h"
-#include "supportFiles/utils.h"
-#include <stdint.h>
-#include <stdio.h>
+#include "utils.h"
 
 // This will set the sequence to a simple sequential pattern.
 // It starts by flashing the first color, and then increments the index and
