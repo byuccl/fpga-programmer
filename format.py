@@ -8,13 +8,16 @@ import sys
 
 repo_root_dir = pathlib.Path(__file__).parent.absolute()
 
-dirs_to_format = ["lab.*", "my_libs"]
+dirs_to_format = ["lab", "my_libs"]
 extensions_to_format = [".c", ".h"]
+
+dirs_to_exclude_from_all = ["build/", "hw/", "zybo/xil_arm_toolchain/bsp"]
 
 def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action='store_true', help = "Check that all files are formatted, and error otherwise.")
+    parser.add_argument("--all", action='store_true', help = "Match against all files, not just the student files.")
     args = parser.parse_args()
 
     dirs_matched = []
@@ -23,10 +26,24 @@ def main():
     for d in repo_root_dir.glob('**'):
         if not d.is_dir():
             continue
-        for dir_re in dirs_to_format:
-            if re.match(dir_re, str(d.relative_to(repo_root_dir))):
+
+        d_rel = str(d.relative_to(repo_root_dir))
+
+        # If --all option is set, match against everything except the black-list (dirs_to_exclude_from_all),
+        # otherwise match against the white list (dirs_to_format)
+        if args.all:
+            exclude = False
+            for dir_re in dirs_to_exclude_from_all:
+                if re.match(dir_re, d_rel):
+                    exclude = True
+                    break
+            if not exclude:
                 dirs_matched.append(d)
-                break
+        else:
+            for dir_re in dirs_to_format:
+                if re.match(dir_re, d_rel):
+                    dirs_matched.append(d)
+                    break
 
     # Find all files in matched directories with a matching extension and format them
     num_formatted = 0

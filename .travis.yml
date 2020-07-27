@@ -33,4 +33,4 @@ jobs:
 
     - name: check_format
       script:
-        - ./format.py --check
+        - ./format.py --check --all
