@@ -27,7 +27,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define MILESTONE3 3
 
 // Uncomment this line and update it to run one of the milestones
-#define MILESTONE MILESTONE3
+// #define MILESTONE MILESTONE3
 
 // The formula for computing the load value is based upon the formula
 // from 4.1.1
