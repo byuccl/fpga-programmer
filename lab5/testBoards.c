@@ -14,7 +14,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 
 // Test the next move code, given several boards.
 // You need to also create 10 boards of your own to test.
-int main() {
+int testBoards() {
   minimax_board_t board1; // Board 1 is the main example in the web-tutorial
                           // that I use on the web-site.
   board1.squares[0][0] = MINIMAX_O_SQUARE;
