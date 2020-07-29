@@ -10,18 +10,17 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 */
 
 #include <stdio.h>
-#include <xparameters.h>
 
+#include "display.h"
+#include "interrupts.h"
+#include "leds.h"
 #include "my_libs/buttons.h"
 #include "my_libs/intervalTimer.h"
 #include "my_libs/switches.h"
-#include "supportFiles/display.h"
-#include "supportFiles/interrupts.h"
-#include "supportFiles/leds.h"
-#include "supportFiles/utils.h"
 #include "utils.h"
 #include "wamControl.h"
 #include "wamDisplay.h"
+#include "xparameters.h"
 
 // The formula for computing the load value is based upon the formula from 4.1.1
 // (calculating timer intervals) in the Cortex-A9 MPCore Technical Reference
@@ -76,10 +75,12 @@ static wamMain_cs_t wamMain_currentState; // current state for main SM.
 static uint32_t randomSeed; // Used to make the game seem more random.
 
 int main() {
+  printf("wamMain\n");
   switches_init(); // Init the slide switches.
   buttons_init();  // Init the push buttons.
-  leds_init(true); // You need to init the LEDs so that LD4 can function as a
-                   // heartbeat.
+  // You need to init the LEDs so that LD4 can function as a heartbeat.
+  leds_init(true);
+  wamMain_selectMoleCountFromSwitches(switches_read());
   // Init all interrupts (but does not enable the interrupts at the devices).
   // Prints an error message if an internal failure occurs because the argument
   // = true.
@@ -115,7 +116,7 @@ void wamMain_tick() {
     // Wait for user to touch screen.
     if (display_isTouched()) {
       // Set the random seed.
-      srand(randomSeed);
+      wamControl_setRandomSeed(randomSeed);
       wamMain_currentState = wamMain_waitForNoTouch_st;
     }
     break;
@@ -154,6 +155,9 @@ void wamMain_tick() {
     wamDisplay_resetAllScoresAndLevel();
     interrupts_enableArmInts();
     wamMain_currentState = wamMain_init_st;
+    break;
+  default:
+    // do nothing
     break;
   }
 }
