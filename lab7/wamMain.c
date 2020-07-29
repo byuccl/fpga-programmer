@@ -23,7 +23,6 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include "wamControl.h"
 #include "wamDisplay.h"
 
-
 // The formula for computing the load value is based upon the formula from 4.1.1
 // (calculating timer intervals) in the Cortex-A9 MPCore Technical Reference
 // Manual 4-2. Assuming that the prescaler = 0, the formula for computing the

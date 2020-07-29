@@ -18,7 +18,6 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include "display.h"
 #include "wamControl.h"
 
-
 /********************** typedefs **********************/
 // This keeps track of all mole information.
 typedef struct {
