@@ -1,0 +1,5 @@
+set (SOURCES main.c clockControl.c clockDisplay.c)
+
+add_executable(lab4.elf ${SOURCES})
+target_link_libraries(lab4.elf ${330_LIBS} ${MY_LIBS})
+set_target_properties(lab4.elf PROPERTIES LINKER_LANGUAGE CXX)

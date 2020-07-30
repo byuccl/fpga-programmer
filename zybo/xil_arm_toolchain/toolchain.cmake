@@ -19,7 +19,4 @@ add_link_options("-Wl,-build-id=none")
 add_link_options(-specs=${CMAKE_CURRENT_LIST_DIR}/Xilinx.spec)
 add_link_options(-Wl,-T)
 add_link_options(-Wl,${CMAKE_CURRENT_LIST_DIR}/lscript.ld)
-# link_libraries(stdc++)
-# link_libraries(gcc)
-# link_libraries(c)
-# link_libraries(xil)
+

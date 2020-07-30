@@ -3,3 +3,4 @@
 report
 *.dump
 *_lab*.zip
+/test_repo

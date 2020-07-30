@@ -86,8 +86,8 @@ static void tickTimer(functionPointer_t *fp, const char *functionName) {
 #define SIMON_GAME 4
 
 /*****************************************************************
-* Uncomment ONE of the lines below to run the desired program.   *
-/****************************************************************/
+ * Uncomment ONE of the lines below to run the desired program.   *
+ *****************************************************************/
 
 //#define RUN_PROGRAM NOTHING
 //#define RUN_PROGRAM BUTTON_HANDLER_TEST
