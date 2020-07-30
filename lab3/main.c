@@ -177,6 +177,8 @@ void milestone2() {
 int main() {
   milestone1(); // Execute milestone 1
   milestone2(); // Execute milestone 2
+
+  return 0;
 }
 
 // Interrupt Routine

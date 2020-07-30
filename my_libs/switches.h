@@ -13,6 +13,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define SWITCHES_H
 
 #include <stdint.h>
+
 #define SWITCHES_INIT_STATUS_OK 1
 #define SWITCHES_INIT_STATUS_FAIL 0
 #define SWITCHES_SW0_MASK 0x1

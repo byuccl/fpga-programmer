@@ -12,9 +12,12 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include "my_libs/buttons.h"
 #include "my_libs/switches.h"
 
+// Run switches and buttons runTest functions
 int main() {
   switches_runTest();
   buttons_runTest();
+
+  return 0;
 }
 
 // Interrupt routine
