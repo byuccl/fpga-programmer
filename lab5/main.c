@@ -43,32 +43,26 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define TOTAL_SECONDS 20
 #define MAX_INTERRUPT_COUNT (INTERRUPTS_PER_SECOND * TOTAL_SECONDS)
 
-// Comment out this line to use the flag method.
-//#define CLOCK_ISR_FUNCTION_INTERRUPT_METHOD
-
-// Uncomment this line to run clockDisplay_test().
-//#define RUN_CLOCK_DISPLAY_TEST
 #define MILESTONE1_MESSAGE "Running testBoards()\n"
 #define MILESTONE2_MESSAGE "Running ticTacToeDisplay_runTest()\n"
 #define MILESTONE3_MESSAGE "Running tic-tac-toe game\n"
+#define MILESTONENONE_MESSAGE                                                  \
+  "No milestone selected. Set '#define MILESTONE' to run a certain "           \
+  "milestone.\n"
 
 // Keep track of how many times isr_function() is called.
 uint32_t isr_functionCallCount = 0;
 
-#if MILESTONE == MILESTONE1
 int main() {
-  printf("%s", MILESTONE1_MESSAGE);
+#if MILESTONE == MILESTONE1
+  printf(MILESTONE1_MESSAGE);
   testBoards();
-}
 
 #elif MILESTONE == MILESTONE2
-int main() {
-  printf("%s", MILESTONE2_MESSAGE);
+  printf(MILESTONE2_MESSAGE);
   ticTacToeDisplay_runTest();
-}
 
 #elif MILESTONE == MILESTONE3
-int main() {
   // Flag method
 
   // Initialize the GPIO LED driver and print out an error message if it fails
@@ -108,9 +102,11 @@ int main() {
   printf("isr invocation count: %d\n\r", interrupts_isrInvocationCount());
   printf("internal interrupt count: %d\n\r", personalInterruptCount);
   return 0;
-}
 
+#else
+  printf(MILESTONENONE_MESSAGE);
 #endif
+}
 
 // Interrupt routine
 void isr_function() {
