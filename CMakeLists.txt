@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 3.14.5)
 project(ecen330)
 include_directories(.)
 include_directories(include)
+include_directories(my_libs)
 
 # add_compile_options(-Wall -Wextra -pedantic)
 # add_compile_options(-Wall -Wextra -pedantic -Werror)
