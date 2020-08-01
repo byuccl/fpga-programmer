@@ -161,13 +161,19 @@ def copy_solution_files(files_to_copy):
         shutil.copy(src, dest)
 
 
-def build():
+def build(config):
     """ Run cmake/make """
 
-    print_color(TermColor.BLUE, "Trying to build")
+    if config:
+        print_color(TermColor.BLUE, "Trying to build (-D" + config + "=1)")
+    else:
+        print_color(TermColor.BLUE, "Trying to build")
 
     # Run cmake
-    proc = subprocess.run(["cmake", ".."], cwd=build_path, check=False)
+    cmake_cmd = ["cmake", ".."]
+    if config is not None:
+        cmake_cmd.append("-D" + config + "=1")
+    proc = subprocess.run(cmake_cmd, cwd=build_path, check=False)
     if proc.returncode:
         return False
 
@@ -182,7 +188,6 @@ def build():
 def run(lab):
     """ Run the lab program in the emulator """
 
-    print_color(TermColor.BLUE, "Running", lab)
     subprocess.run([str(build_path / lab / (lab + ".elf"))], check=True)
 
 
@@ -202,6 +207,21 @@ def zip(lab, files):
             zf.write(f[0], arcname=f[0].name)
 
 
+def get_configs(lab):
+    """ Return the different configurations for the lab.  Most labs
+    don't have multiple configurations, but some (like Simon) have
+    multiple test modes to run. """
+
+    # Return list of configurations in (name, CMAKE_DEFINE) format
+    if lab == "lab6":
+        return [
+            ("VERIFY_SEQUENCE_TEST", "RUN_PROGRAM_VERIFY_SEQUENCE_TEST"),
+            ("SIMON_GAME", "RUN_PROGRAM_SIMON_GAME"),
+        ]
+    else:
+        return [("main", None)]
+
+
 def main():
     """ Copy files into temp repo, build and run lab """
 
@@ -215,25 +235,30 @@ def main():
     # First format student's code
     format_code()
 
-    # Clone clean 330 repo
-    clone_student_repo()
-
-    # Get a list of files need to build and zipo
+    # Get a list of files need to build and zip
     files = get_files_to_copy_and_zip(args.lab)
 
-    # Copy over necessary files to test repo
-    copy_solution_files(files)
+    # Loop through configs
+    for (config_name, config_define) in get_configs(args.lab):
+        print_color(TermColor.BLUE, "Testing", config_name)
 
-    # See if the code builds
-    if not build():
-        error("Build failed.")
+        # Clone/clean 330 repo
+        clone_student_repo()
+
+        # Copy over necessary files to test repo
+        copy_solution_files(files)
+
+        # See if the code builds
+        if not build(config_define):
+            error("Build failed.")
+
+        # Run it
+        if not args.no_run:
+            print_color(TermColor.BLUE, "Running", args.lab, config_name)
+            run(args.lab)
 
     # Zip it
     zip(args.lab, files)
-
-    # Run it
-    if not args.no_run:
-        run(args.lab)
 
     print_color(TermColor.BLUE, "Done.")
 
