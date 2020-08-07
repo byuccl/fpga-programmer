@@ -25,8 +25,8 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 ////////////////////////////////////////////////////////////////////////////////
 // Uncomment one of the following lines to run Milestone 1 or 2      ///////////
 ////////////////////////////////////////////////////////////////////////////////
-// #define PROGRAM MILESTONE_1
-// #define PROGRAM MILESTONE_2
+// #define RUN_PROGRAM MILESTONE_1
+// #define RUN_PROGRAM MILESTONE_2
 
 #define MILESTONE_1_MSG "Running milestone 1.\n"
 #define MILESTONE_2_MSG "Running milestone 2.\n"
@@ -189,10 +189,10 @@ void milestone2() {
 // main executes both milestones.
 int main() {
 
-#if (PROGRAM == MILESTONE_1)
+#if (RUN_PROGRAM == MILESTONE_1)
   printf(MILESTONE_1_MSG);
   milestone1(); // Execute milestone 1
-#elif (PROGRAM == MILESTONE_2)
+#elif (RUN_PROGRAM == MILESTONE_2)
   printf(MILESTONE_2_MSG);
   milestone2(); // Execute milestone 2
 #else
