@@ -19,6 +19,19 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include "my_libs/intervalTimer.h"
 #include "utils.h"
 
+#define MILESTONE_1 1
+#define MILESTONE_2 2
+
+////////////////////////////////////////////////////////////////////////////////
+// Uncomment one of the following lines to run Milestone 1 or 2      ///////////
+////////////////////////////////////////////////////////////////////////////////
+// #define PROGRAM MILESTONE_1
+// #define PROGRAM MILESTONE_2
+
+#define MILESTONE_1_MSG "Running milestone 1.\n"
+#define MILESTONE_2_MSG "Running milestone 2.\n"
+#define MILESTONE_NONE_MSG "No milestone selected to run.\n"
+
 #define ROLLOVER_DELAY_IN_MS 45000
 
 #define TCR0_OFFSET 0x08 // register offset for TCR0
@@ -175,9 +188,16 @@ void milestone2() {
 
 // main executes both milestones.
 int main() {
-  milestone1(); // Execute milestone 1
-  milestone2(); // Execute milestone 2
 
+#if (PROGRAM == MILESTONE_1)
+  printf(MILESTONE_1_MSG);
+  milestone1(); // Execute milestone 1
+#elif (PROGRAM == MILESTONE_2)
+  printf(MILESTONE_2_MSG);
+  milestone2(); // Execute milestone 2
+#else
+  printf(MILESTONE_NONE_MSG);
+#endif
   return 0;
 }
 
