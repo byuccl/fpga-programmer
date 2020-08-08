@@ -60,15 +60,15 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 uint32_t isr_functionCallCount = 0;
 
 int main() {
-#if MILESTONE == MILESTONE1
+#if RUN_PROGRAM == MILESTONE1
   printf(MILESTONE1_MESSAGE);
   testBoards();
 
-#elif MILESTONE == MILESTONE2
+#elif RUN_PROGRAM == MILESTONE2
   printf(MILESTONE2_MESSAGE);
   ticTacToeDisplay_runTest();
 
-#elif MILESTONE == MILESTONE3
+#elif RUN_PROGRAM == MILESTONE3
   // Flag method
 
   // Initialize the GPIO LED driver and print out an error message if it fails
