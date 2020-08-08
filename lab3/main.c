@@ -28,9 +28,12 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 // #define RUN_PROGRAM MILESTONE_1
 // #define RUN_PROGRAM MILESTONE_2
 
+#ifndef RUN_PROGRAM
+#define RUN_PROGRAM MILESTONE_2
+#endif
+
 #define MILESTONE_1_MSG "Running milestone 1.\n"
 #define MILESTONE_2_MSG "Running milestone 2.\n"
-#define MILESTONE_NONE_MSG "No milestone selected to run.\n"
 
 #define ROLLOVER_DELAY_IN_MS 45000
 
@@ -195,8 +198,6 @@ int main() {
 #elif (RUN_PROGRAM == MILESTONE_2)
   printf(MILESTONE_2_MSG);
   milestone2(); // Execute milestone 2
-#else
-  printf(MILESTONE_NONE_MSG);
 #endif
   return 0;
 }
