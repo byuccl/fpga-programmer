@@ -21,6 +21,23 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include "utils.h"
 #include "xparameters.h"
 
+#define MILESTONE_1 1
+#define MILESTONE_2_FLAG_METHOD 2
+#define MILESTONE_2_DIRECT_METHOD 3
+
+////////////////////////////////////////////////////////////////////////////////
+// Uncomment one of the following lines to run Milestone 1 or 2      ///////////
+////////////////////////////////////////////////////////////////////////////////
+// #define RUN_PROGRAM MILESTONE_1
+// #define RUN_PROGRAM MILESTONE_2_FLAG_METHOD
+// #define RUN_PROGRAM MILESTONE_2_DIRECT_METHOD
+
+// If nothing is uncommented above, run milestone 2, flag method
+#ifndef RUN_PROGRAM
+#define RUN_PROGRAM MILESTONE_2_FLAG_METHOD
+#endif
+
+#define RUN_DISPLAY_TEST_MSG "Running clockDisplay_test()\n"
 #define ISR_INVOCATION_MESSAGE "Running the clock lab using isr_function()\n"
 #define FLAG_INVOCATION_MESSAGE "Running the clock lab using the flag method\n"
 
@@ -38,24 +55,16 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define TOTAL_SECONDS 20
 #define MAX_INTERRUPT_COUNT (INTERRUPTS_PER_SECOND * TOTAL_SECONDS)
 
-// Comment out this line to use the flag method.
-//#define CLOCK_ISR_FUNCTION_INTERRUPT_METHOD
-
-// Uncomment this line to run clockDisplay_test().
-//#define RUN_CLOCK_DISPLAY_TEST
-#define RUN_DISPLAY_TEST_MSG "Running clockDisplay_test()\n"
-
 // Keep track of how many times isr_function() is called.
 uint32_t isr_functionCallCount = 0;
 
-#ifdef CLOCK_ISR_FUNCTION_INTERRUPT_METHOD
 // This main uses isr_function() to invoked clockControl_tick().
 int main() {
-#ifdef RUN_CLOCK_DISPLAY_TEST
+#if (RUN_PROGRAM == MILESTONE_1)
   printf(RUN_DISPLAY_TEST_MSG);
   clockDisplay_runTest();
-  return 0;
-#endif // RUN_CLOCK_DISPLAY_TEST
+
+#elif (RUN_PROGRAM == MILESTONE_2_DIRECT_METHOD)
   printf(ISR_INVOCATION_MESSAGE);
   // Initialize the GPIO LED driver and print out an error message if it fails
   // (argument = true). You need to init the LEDs so that LD4 can function as a
@@ -88,39 +97,23 @@ int main() {
   interrupts_disableArmInts();
   printf("isr invocation count: %d\n\r", interrupts_isrInvocationCount());
   printf("internal interrupt count: %d\n\r", isr_functionCallCount);
-  return 0;
-}
 
-// The clockControl_tick() function is now called directly by the timer
-// interrupt service routine.
-void isr_function() {
-  clockControl_tick();     // tick gets called directly by the timer interrupt
-                           // service routine.
-  isr_functionCallCount++; // Keep track of how many times you are called to
-                           // ensure that you don't miss interrupts.
-}
+#elif (RUN_PROGRAM == MILESTONE_2_FLAG_METHOD)
+  // This main() uses the flag method to invoke clockControl_tick().
 
-#else
-// This main() uses the flag method to invoke clockControl_tick().
-int main() {
-#ifdef RUN_CLOCK_DISPLAY_TEST
-  printf(RUN_DISPLAY_TEST_MSG);
-  clockDisplay_runTest();
-  return 0;
-#endif // RUN_CLOCK_DISPLAY_TEST
   printf(FLAG_INVOCATION_MESSAGE);
   // Initialize the GPIO LED driver and print out an error message if it fails
-  // (argument = true). You need to init the LEDs so that LD4 can function as a
-  // heartbeat.
+  // (argument = true). You need to init the LEDs so that LD4 can function as
+  // a heartbeat.
   leds_init(true);
   // Init all interrupts (but does not enable the interrupts at the devices).
-  // Prints an error message if an internal failure occurs because the argument
-  // = true.
+  // Prints an error message if an internal failure occurs because the
+  // argument = true.
   interrupts_initAll(true);
   interrupts_setPrivateTimerLoadValue(TIMER_LOAD_VALUE);
   interrupts_enableTimerGlobalInts();
-  // Initialization of the clock display is not time-dependent, do it outside of
-  // the state machine.
+  // Initialization of the clock display is not time-dependent, do it outside
+  // of the state machine.
   clockDisplay_init();
   clockControl_init();
   // Keep track of your personal interrupt count. Want to make sure that you
@@ -144,12 +137,17 @@ int main() {
   interrupts_disableArmInts();
   printf("isr invocation count: %d\n\r", interrupts_isrInvocationCount());
   printf("internal interrupt count: %d\n\r", personalInterruptCount);
+#endif
   return 0;
 }
 
-// Interrupt routine
 void isr_function() {
-  // Empty for now.
-}
-
+#if (RUN_PROGRAM == MILESTONE_2_DIRECT_METHOD)
+  // The clockControl_tick() function is now called directly by the timer
+  // interrupt service routine.
+  clockControl_tick();     // tick gets called directly by the timer interrupt
+                           // service routine.
+  isr_functionCallCount++; // Keep track of how many times you are called to
+// ensure that you don't miss interrupts.
 #endif
+}
