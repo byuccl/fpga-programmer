@@ -9,10 +9,6 @@ source code for personal or educational use.
 For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 */
 
-// Uncomment this line if you are the instructor and
-// have the code for winScreen.c installed.
-//#define INSTRUCTOR_VERSION
-
 #include <stdint.h>
 #include <stdio.h>
 #include <xparameters.h>
@@ -23,16 +19,30 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include "flashSequence.h"
 #include "fsTester.h"
 #include "interrupts.h"
+#include "intervalTimer.h"
 #include "leds.h"
-#include "my_libs/intervalTimer.h"
 #include "simonControl.h"
 #include "simonDisplay.h"
 #include "utils.h"
 #include "verifySequence.h"
 #include "vsTester.h"
 
-#ifdef INSTRUCTOR_VERSION
-#include "winScreen.h"
+#define MILESTONE_1 1
+#define MILESTONE_2 2
+#define MILESTONE_3 3
+#define MILESTONE_4 4
+
+////////////////////////////////////////////////////////////////////////////////
+// Uncomment one of the following lines to run Milestone 1, 2, 3, or 4    //////
+////////////////////////////////////////////////////////////////////////////////
+// #define RUN_PROGRAM MILESTONE_1
+// #define RUN_PROGRAM MILESTONE_2
+// #define RUN_PROGRAM MILESTONE_3
+// #define RUN_PROGRAM MILESTONE_4
+
+// If nothing is uncommented above, run milestone 4
+#ifndef RUN_PROGRAM
+#define RUN_PROGRAM MILESTONE_4
 #endif
 
 // Tick Period in ms. Adjust as necessary.
@@ -79,24 +89,8 @@ static void tickTimer(functionPointer_t *fp, const char *functionName) {
 
 /**************** main() code starts here. ************************/
 
-#define NOTHING 0
-#define BUTTON_HANDLER_TEST 1
-#define FLASH_SEQUENCE_TEST 2
-#define VERIFY_SEQUENCE_TEST 3
-#define SIMON_GAME 4
-
-/*****************************************************************
- * Uncomment ONE of the lines below to run the desired program.   *
- *****************************************************************/
-
-//#define RUN_PROGRAM NOTHING
-//#define RUN_PROGRAM BUTTON_HANDLER_TEST
-//#define RUN_PROGRAM FLASH_SEQUENCE_TEST
-//#define RUN_PROGRAM VERIFY_SEQUENCE_TEST
-//#define RUN_PROGRAM SIMON_GAME
-
 /****************************** RUN_BUTTON_HANDLER_TEST ****************/
-#if RUN_PROGRAM == BUTTON_HANDLER_TEST
+#if RUN_PROGRAM == MILESTONE_1
 static void test_init() {
   leds_init(true);
   bhTester_init();
@@ -110,7 +104,7 @@ void isr_function() {
 #endif
 
 /****************************** RUN_SIMON_FLASH_SEQUENCE_TEST ****************/
-#if RUN_PROGRAM == FLASH_SEQUENCE_TEST
+#if RUN_PROGRAM == MILESTONE_2
 static void test_init() {
   leds_init(true);
   fsTester_init();
@@ -123,7 +117,7 @@ void isr_function() {
 }
 
 /*********************** RUN VERIFY SEQUENCE TEST ***************************/
-#elif RUN_PROGRAM == VERIFY_SEQUENCE_TEST
+#elif RUN_PROGRAM == MILESTONE_3
 static void test_init() {
   vsTester_init();
   printf("Running the verifySequence test.\n");
@@ -137,7 +131,7 @@ void isr_function() {
 }
 
 /****************************** RUN_SIMON_GAME ****************/
-#elif RUN_PROGRAM == SIMON_GAME
+#elif RUN_PROGRAM == MILESTONE_4
 static void test_init() {
   display_init();
   leds_init(true);
@@ -145,9 +139,6 @@ static void test_init() {
   buttonHandler_init();
   flashSequence_init();
   verifySequence_init();
-#ifdef INSTRUCTOR_VERSION
-  winScreen_init();
-#endif
   display_fillScreen(DISPLAY_BLACK);
   simonControl_enable();
   printf("Running the simon game.\n");
@@ -158,16 +149,7 @@ void isr_function() {
   buttonHandler_tick();
   flashSequence_tick();
   verifySequence_tick();
-#ifdef INSTRUCTOR_VERSION
-  winScreen_tick();
-#endif
 }
-/*************************** RUN NOTHINER *********************/
-#elif RUN_PROGRAM == NOTHING
-void test_init() {
-  printf("Running no progran.\n");
-} // Mostly empty functions to keep the linker happy.
-void isr_function() {}
 #endif
 
 // All programs share the same main.
