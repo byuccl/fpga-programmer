@@ -26,8 +26,17 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define MILESTONE2 2
 #define MILESTONE3 3
 
-// Uncomment this line and update it to run one of the milestones
-// #define MILESTONE MILESTONE3
+////////////////////////////////////////////////////////////////////////////////
+// Uncomment one of the following lines to run Milestone 1, 2, or 3    /////////
+////////////////////////////////////////////////////////////////////////////////
+// #define RUN_PROGRAM MILESTONE_1
+// #define RUN_PROGRAM MILESTONE_2
+// #define RUN_PROGRAM MILESTONE_3
+
+// If nothing is uncommented above, run milestone 3
+#ifndef RUN_PROGRAM
+#define RUN_PROGRAM MILESTONE_3
+#endif
 
 // The formula for computing the load value is based upon the formula
 // from 4.1.1
@@ -46,9 +55,6 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define MILESTONE1_MESSAGE "Running testBoards()\n"
 #define MILESTONE2_MESSAGE "Running ticTacToeDisplay_runTest()\n"
 #define MILESTONE3_MESSAGE "Running tic-tac-toe game\n"
-#define MILESTONENONE_MESSAGE                                                  \
-  "No milestone selected. Set '#define MILESTONE' to run a certain "           \
-  "milestone.\n"
 
 // Keep track of how many times isr_function() is called.
 uint32_t isr_functionCallCount = 0;
@@ -103,12 +109,10 @@ int main() {
   printf("internal interrupt count: %d\n\r", personalInterruptCount);
   return 0;
 
-#else
-  printf(MILESTONENONE_MESSAGE);
 #endif
 }
 
 // Interrupt routine
 void isr_function() {
-  // Empty for now.
+  // Empty for flag method (flag set elsewhere)
 }
