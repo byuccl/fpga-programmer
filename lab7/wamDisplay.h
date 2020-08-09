@@ -100,9 +100,6 @@ uint16_t wamDisplay_getLevel();
 // "Misses". Usually only called once when you are initializing the game.
 void wamDisplay_drawScoreScreen();
 
-// Make this function available for testing purposes.
-void wamDisplay_incrementMissScore();
-
 // Reset the scores and level to restart the game.
 void wamDisplay_resetAllScoresAndLevel();
 

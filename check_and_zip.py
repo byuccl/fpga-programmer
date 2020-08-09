@@ -118,6 +118,8 @@ def get_files_to_copy_and_zip(lab):
         files.append((src_lab_path / "ticTacToeControl.c", dest_lab_path, True))
         files.append((src_lab_path / "ticTacToeDisplay.c", dest_lab_path, True))
         files.append((src_lab_path / "minimax.c", dest_lab_path, True))
+        files.append((src_lab_path / "testBoards.c", dest_lab_path, True))
+
     elif lab == "lab6":
         files.append((chk_lab_path / "my_libs.cmake", dest_libs_path / "CMakeLists.txt", False))
         files.append((chk_lab_path / "cmake", dest_lab_path / "CMakeLists.txt", False))
@@ -161,18 +163,18 @@ def copy_solution_files(files_to_copy):
         shutil.copy(src, dest)
 
 
-def build(config):
+def build(milestone):
     """ Run cmake/make """
 
-    if config:
-        print_color(TermColor.BLUE, "Trying to build (-D" + config + "=1)")
+    if milestone:
+        print_color(TermColor.BLUE, "Trying to build (-D" + milestone + "=1)")
     else:
         print_color(TermColor.BLUE, "Trying to build")
 
     # Run cmake
     cmake_cmd = ["cmake", ".."]
-    if config is not None:
-        cmake_cmd.append("-D" + config + "=1")
+    if milestone is not None:
+        cmake_cmd.append("-D" + milestone + "=1")
     proc = subprocess.run(cmake_cmd, cwd=build_path, check=False)
     if proc.returncode:
         return False
@@ -206,17 +208,41 @@ def zip(lab, files):
             print("Adding", f[0].relative_to(repo_path))
             zf.write(f[0], arcname=f[0].name)
 
+    return zip_path.relative_to(repo_path)
 
-def get_configs(lab):
-    """ Return the different configurations for the lab.  Most labs
-    don't have multiple configurations, but some (like Simon) have
-    multiple test modes to run. """
+
+def get_milestones(lab):
+    """ Return the different milestones for the lab.  """
 
     # Return list of configurations in (name, CMAKE_DEFINE) format
-    if lab == "lab6":
+    if lab == "lab3":
         return [
-            ("VERIFY_SEQUENCE_TEST", "RUN_PROGRAM_VERIFY_SEQUENCE_TEST"),
-            ("SIMON_GAME", "RUN_PROGRAM_SIMON_GAME"),
+            ("MILESTONE_1", "RUN_PROGRAM_MILESTONE_1"),
+            ("MILESTONE_2", "RUN_PROGRAM_MILESTONE_2"),
+        ]
+    elif lab == "lab4":
+        return [
+            ("MILESTONE_1_SIZE6", "RUN_PROGRAM_MILESTONE_1_SIZE6"),
+            ("MILESTONE_1_SIZE3", "RUN_PROGRAM_MILESTONE_1_SIZE3"),
+            ("MILESTONE_2", "RUN_PROGRAM_MILESTONE_2"),
+        ]
+    elif lab == "lab5":
+        return [
+            ("MILESTONE_1", "RUN_PROGRAM_MILESTONE_1"),
+            ("MILESTONE_2", "RUN_PROGRAM_MILESTONE_2"),
+            ("MILESTONE_3", "RUN_PROGRAM_MILESTONE_3"),
+        ]
+    elif lab == "lab6":
+        return [
+            ("MILESTONE_1", "RUN_PROGRAM_MILESTONE_1"),
+            ("MILESTONE_2", "RUN_PROGRAM_MILESTONE_2"),
+            ("MILESTONE_3", "RUN_PROGRAM_MILESTONE_3"),
+            ("MILESTONE_4", "RUN_PROGRAM_MILESTONE_4"),
+        ]
+    elif lab == "lab7":
+        return [
+            ("MILESTONE_1", "RUN_PROGRAM_MILESTONE_1"),
+            ("MILESTONE_2", "RUN_PROGRAM_MILESTONE_2"),
         ]
     else:
         return [("main", None)]
@@ -232,6 +258,9 @@ def main():
     )
     args = parser.parse_args()
 
+    # Delete existing repo
+    shutil.rmtree(test_repo_path, ignore_errors=True)
+
     # First format student's code
     format_code()
 
@@ -239,8 +268,17 @@ def main():
     files = get_files_to_copy_and_zip(args.lab)
 
     # Loop through configs
-    for (config_name, config_define) in get_configs(args.lab):
-        print_color(TermColor.BLUE, "Testing", config_name)
+    for (config_name, config_define) in get_milestones(args.lab):
+        if args.no_run:
+            print_color(TermColor.BLUE, "Now Testing", config_name)
+        else:
+            input(
+                TermColor.BLUE
+                + "Now Testing "
+                + config_name
+                + ". Hit <Enter> to continue."
+                + TermColor.END
+            )
 
         # Clone/clean 330 repo
         clone_student_repo()
@@ -249,18 +287,28 @@ def main():
         copy_solution_files(files)
 
         # See if the code builds
-        if not build(config_define):
-            error("Build failed.")
-
-        # Run it
-        if not args.no_run:
-            print_color(TermColor.BLUE, "Running", args.lab, config_name)
-            run(args.lab)
+        if build(config_define):
+            # Run it
+            if not args.no_run:
+                print_color(TermColor.BLUE, "Running", args.lab, config_name)
+                run(args.lab)
+        else:
+            s = ""
+            while s not in ("y", "n"):
+                s = input(
+                    TermColor.RED
+                    + "Build failed for "
+                    + config_name
+                    + ". Continue? (y/n)"
+                    + TermColor.END
+                ).lower()
+            if s == "n":
+                sys.exit(0)
 
     # Zip it
-    zip(args.lab, files)
+    zip_relpath = zip(args.lab, files)
 
-    print_color(TermColor.BLUE, "Done.")
+    print_color(TermColor.BLUE, "Done. Created", zip_relpath)
 
 
 if __name__ == "__main__":

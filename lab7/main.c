@@ -36,8 +36,8 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define RUN_PROGRAM MILESTONE_2
 #endif
 
-#define MILESTONE_1_MSG "Running milestone 1, wamDisplay_runMilestone1_test()\n"
-#define MILESTONE_2_MSG "Running milestone 2, whack-a-mole game\n"
+#define MILESTONE_1_MSG "Running Milestone 1, wamDisplay_runMilestone1_test()\n"
+#define MILESTONE_2_MSG "Running Milestone 2, Whack-a-mole game\n"
 
 // The formula for computing the load value is based upon the formula from 4.1.1
 // (calculating timer intervals) in the Cortex-A9 MPCore Technical Reference

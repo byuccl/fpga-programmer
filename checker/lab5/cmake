@@ -1,8 +1,11 @@
-set (SOURCES main.c ticTacToeControl.c ticTacToeDisplay.c minimax.c)
-set (MY_LIBS buttons_switches)
+IF(RUN_PROGRAM_MILESTONE_1)
+    ADD_DEFINITIONS(-DRUN_PROGRAM=1)
+ELSEIF(RUN_PROGRAM_MILESTONE_2)
+    ADD_DEFINITIONS(-DRUN_PROGRAM=2)
+ELSEIF(RUN_PROGRAM_MILESTONE_3)
+    ADD_DEFINITIONS(-DRUN_PROGRAM=3)
+ENDIF()
 
-ADD_DEFINITIONS(-DMILESTONE=3)
-
-add_executable(lab5.elf ${SOURCES})
-target_link_libraries(lab5.elf ${330_LIBS} ${MY_LIBS})
+add_executable(lab5.elf main.c ticTacToeControl.c ticTacToeDisplay.c minimax.c testBoards.c)
+target_link_libraries(lab5.elf ${330_LIBS} buttons_switches)
 set_target_properties(lab5.elf PROPERTIES LINKER_LANGUAGE CXX)

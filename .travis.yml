@@ -34,3 +34,6 @@ jobs:
     - name: check_format
       script:
         - ./format.py --check --all
+    - name: check_and_zip
+      script:
+        - ./check_and_zip.py --no_run lab1
