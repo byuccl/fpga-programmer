@@ -11,16 +11,33 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 
 #include <stdio.h>
 
+#include "buttons.h"
 #include "display.h"
 #include "interrupts.h"
+#include "intervalTimer.h"
 #include "leds.h"
-#include "my_libs/buttons.h"
-#include "my_libs/intervalTimer.h"
-#include "my_libs/switches.h"
+#include "switches.h"
 #include "utils.h"
 #include "wamControl.h"
 #include "wamDisplay.h"
 #include "xparameters.h"
+
+#define MILESTONE_1 1
+#define MILESTONE_2 2
+
+////////////////////////////////////////////////////////////////////////////////
+// Uncomment one of the following lines to run Milestone 1 or 2    /////////////
+////////////////////////////////////////////////////////////////////////////////
+// #define RUN_PROGRAM MILESTONE_1
+// #define RUN_PROGRAM MILESTONE_2
+
+// If nothing is uncommented above, run milestone 2
+#ifndef RUN_PROGRAM
+#define RUN_PROGRAM MILESTONE_2
+#endif
+
+#define MILESTONE_1_MSG "Running milestone 1, wamDisplay_runMilestone1_test()\n"
+#define MILESTONE_2_MSG "Running milestone 2, whack-a-mole game\n"
 
 // The formula for computing the load value is based upon the formula from 4.1.1
 // (calculating timer intervals) in the Cortex-A9 MPCore Technical Reference
@@ -73,40 +90,6 @@ typedef enum {
 
 static wamMain_cs_t wamMain_currentState; // current state for main SM.
 static uint32_t randomSeed; // Used to make the game seem more random.
-
-int main() {
-  printf("wamMain\n");
-  switches_init(); // Init the slide switches.
-  buttons_init();  // Init the push buttons.
-  // You need to init the LEDs so that LD4 can function as a heartbeat.
-  leds_init(true);
-  wamMain_selectMoleCountFromSwitches(switches_read());
-  // Init all interrupts (but does not enable the interrupts at the devices).
-  // Prints an error message if an internal failure occurs because the argument
-  // = true.
-  interrupts_initAll(true); // Init the interrupt code.
-  interrupts_setPrivateTimerLoadValue(
-      TIMER_LOAD_VALUE);              // Set the timer period.
-  interrupts_enableTimerGlobalInts(); // Enable interrupts at the timer.
-  interrupts_startArmPrivateTimer();  // Start the private ARM timer running.
-  display_init(); // Init the display (make sure to do it only once).
-  wamControl_setMaxActiveMoles(
-      MAX_ACTIVE_MOLES); // Start out with this many simultaneous active moles.
-  wamControl_setMaxMissCount(
-      MAX_MISSES); // Allow this many misses before ending game.
-  wamControl_setMsPerTick(
-      MS_PER_TICK);              // Let the controller know how ms per tick..
-  wamDisplay_drawSplashScreen(); // Draw the game splash screen.
-  wamControl_init();
-  wamDisplay_init();
-  wamMain_currentState = wamMain_init_st;
-  randomSeed = 0;
-  utils_msDelay(500);
-  interrupts_enableArmInts();
-  while (1) {
-    utils_sleep();
-  }
-}
 
 void wamMain_tick() {
   switch (wamMain_currentState) {
@@ -162,7 +145,48 @@ void wamMain_tick() {
   }
 }
 
+int main() {
+#if RUN_PROGRAM == MILESTONE_1
+  printf(MILESTONE_1_MSG);
+  wamDisplay_runMilestone1_test();
+#elif RUN_PROGRAM == MILESTONE_2
+  printf(MILESTONE_2_MSG);
+  switches_init(); // Init the slide switches.
+  buttons_init();  // Init the push buttons.
+  // You need to init the LEDs so that LD4 can function as a heartbeat.
+  leds_init(true);
+  wamMain_selectMoleCountFromSwitches(switches_read());
+  // Init all interrupts (but does not enable the interrupts at the devices).
+  // Prints an error message if an internal failure occurs because the argument
+  // = true.
+  interrupts_initAll(true); // Init the interrupt code.
+  interrupts_setPrivateTimerLoadValue(
+      TIMER_LOAD_VALUE);              // Set the timer period.
+  interrupts_enableTimerGlobalInts(); // Enable interrupts at the timer.
+  interrupts_startArmPrivateTimer();  // Start the private ARM timer running.
+  display_init(); // Init the display (make sure to do it only once).
+  wamControl_setMaxActiveMoles(
+      MAX_ACTIVE_MOLES); // Start out with this many simultaneous active moles.
+  wamControl_setMaxMissCount(
+      MAX_MISSES); // Allow this many misses before ending game.
+  wamControl_setMsPerTick(
+      MS_PER_TICK);              // Let the controller know how ms per tick..
+  wamDisplay_drawSplashScreen(); // Draw the game splash screen.
+  wamControl_init();
+  wamDisplay_init();
+  wamMain_currentState = wamMain_init_st;
+  randomSeed = 0;
+  utils_msDelay(500);
+  interrupts_enableArmInts();
+  while (1) {
+    utils_sleep();
+  }
+#endif
+}
+
 void isr_function() {
+#if RUN_PROGRAM == MILESTONE_2
   wamMain_tick();
   wamControl_tick();
+#endif
 }
