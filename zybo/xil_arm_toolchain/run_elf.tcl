@@ -2,17 +2,14 @@ connect -url tcp:127.0.0.1:3121
 
 # puts "Cable targets:\n [targets ]"
 
-# Get a list of targets that have the jtag_cable_name =~ $cable_filter
-# name == "fpga_name" is used because a single cable can have multiple targets (fpga, arm0, arm1, etc)
-# -target properties is used to turn a list with 1 item per target.  Otherwise, even if there is only 
-# one target, the return value is a space separates list of values and tcl considers the list length > 1
+# Get a list of targets 
 set target_list [targets -nocase -filter {name =~ "xc7z010*"} -target-properties]
 
 if {[llength $target_list] > 1} {
-	puts "Error: Multiple matching targets: $target_list (Use JTAG_BOARD_LOC or JTAG_BOARD_FILTER to filter to only one board)"
+	puts "Error: Multiple matching targets: $target_list (Make sure only one board is plugged in)"
 	exit 1
 } elseif {[llength $target_list] == 0} {
-    puts "Error: No targets matching filter: $cable_filter"
+    puts "Error: No targets.  Make sure board is plugged in and driver is installed."
     exit 1
 }
 
@@ -29,7 +26,14 @@ source hw/ps7_init.tcl
 ps7_init
 ps7_post_config
 targets -set -nocase -filter {name =~ "*A9*#0"}
+jtagterminal -start
 dow $::env(ELF_FILE)
 configparams force-mem-access 0
 targets -set -nocase -filter {name =~ "*A9*#0"}
 con
+
+puts "\033\[95m A 'JTAG-based Hyperterminal' window should now open.  This will display the output of the program. Press 'Ctrl+C' in this window to quit.\033\[0m"
+
+while { 1 } {
+
+}

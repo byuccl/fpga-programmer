@@ -27,7 +27,7 @@ int main() {
   display_setTextSize(TEXT_SIZE);        // Make the text a little larger.
   display_println("hello world (on the LCD)!"); // This actually prints the
                                                 // string to the LCD.
-  printf("hello world!\n\r");                   // This prints on the console.
+  printf("hello world!\n");                     // This prints on the console.
   return 0;
 }
 

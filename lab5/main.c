@@ -22,9 +22,9 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include "utils.h"
 #include "xparameters.h"
 
-#define MILESTONE1 1
-#define MILESTONE2 2
-#define MILESTONE3 3
+#define MILESTONE_1 1
+#define MILESTONE_2 2
+#define MILESTONE_3 3
 
 ////////////////////////////////////////////////////////////////////////////////
 // Uncomment one of the following lines to run Milestone 1, 2, or 3    /////////
@@ -60,15 +60,16 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 uint32_t isr_functionCallCount = 0;
 
 int main() {
-#if RUN_PROGRAM == MILESTONE1
+#if RUN_PROGRAM == MILESTONE_1
   printf(MILESTONE1_MESSAGE);
   testBoards();
 
-#elif RUN_PROGRAM == MILESTONE2
+#elif RUN_PROGRAM == MILESTONE_2
   printf(MILESTONE2_MESSAGE);
   ticTacToeDisplay_runTest();
 
-#elif RUN_PROGRAM == MILESTONE3
+#elif RUN_PROGRAM == MILESTONE_3
+  printf(MILESTONE3_MESSAGE);
   // Flag method
 
   // Initialize the GPIO LED driver and print out an error message if it fails
@@ -105,8 +106,8 @@ int main() {
     }
   }
   interrupts_disableArmInts();
-  printf("isr invocation count: %d\n\r", interrupts_isrInvocationCount());
-  printf("internal interrupt count: %d\n\r", personalInterruptCount);
+  printf("isr invocation count: %d\n", interrupts_isrInvocationCount());
+  printf("internal interrupt count: %d\n", personalInterruptCount);
   return 0;
 
 #endif

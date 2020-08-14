@@ -8,11 +8,11 @@ set(CMAKE_CXX_COMPILER "arm-none-eabi-g++")
 SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
 SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS)
 
-add_compile_options("-mcpu=cortex-a9")
+add_compile_options("-march=armv7-a")
 add_compile_options("-mfpu=vfpv3")
 add_compile_options("-mfloat-abi=hard")
 
-add_link_options("-mcpu=cortex-a9")
+add_link_options("-march=armv7-a")
 add_link_options("-mfpu=vfpv3")
 add_link_options("-mfloat-abi=hard")
 add_link_options("-Wl,-build-id=none")

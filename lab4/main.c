@@ -98,8 +98,8 @@ int main() {
     }
   }
   interrupts_disableArmInts();
-  printf("isr invocation count: %d\n\r", interrupts_isrInvocationCount());
-  printf("internal interrupt count: %d\n\r", personalInterruptCount);
+  printf("isr invocation count: %d\n", interrupts_isrInvocationCount());
+  printf("internal interrupt count: %d\n", personalInterruptCount);
 #endif
   return 0;
 }

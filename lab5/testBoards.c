@@ -81,17 +81,17 @@ void testBoards() {
 
   minimax_computeNextMove(&board1, true, &row,
                           &column); // true means X is current player.
-  printf("next move for board1: (%d, %d)\n\r", row, column);
+  printf("next move for board1: (%d, %d)\n", row, column);
   minimax_computeNextMove(&board2, true, &row,
                           &column); // true means X is current player.
-  printf("next move for board2: (%d, %d)\n\r", row, column);
+  printf("next move for board2: (%d, %d)\n", row, column);
   minimax_computeNextMove(&board3, true, &row,
                           &column); // true means X is current player.
-  printf("next move for board3: (%d, %d)\n\r", row, column);
+  printf("next move for board3: (%d, %d)\n", row, column);
   minimax_computeNextMove(&board4, false, &row,
                           &column); // false means O is current player.
-  printf("next move for board4: (%d, %d)\n\r", row, column);
+  printf("next move for board4: (%d, %d)\n", row, column);
   minimax_computeNextMove(&board5, false, &row,
                           &column); // false means O is current player.
-  printf("next move for board5: (%d, %d)\n\r", row, column);
+  printf("next move for board5: (%d, %d)\n", row, column);
 }
