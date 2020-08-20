@@ -35,6 +35,23 @@ typedef enum {
   wamDisplay_moleCount_4
 } wamDisplay_moleCount_e;
 
+// This keeps track of all mole information.
+typedef struct {
+  wamDisplay_point_t origin; // This is the origin of the hole for this mole.
+  // A mole is active if either of the tick counts are non-zero. The mole is
+  // dormant otherwise. During operation, non-zero tick counts are decremented
+  // at a regular rate by the control state machine. The mole remains in his
+  // hole until ticksUntilAwake decrements to zero and then he pops out. The
+  // mole remains popped out of his hole until ticksUntilDormant decrements to
+  // zero. Once ticksUntilDomant goes to zero, the mole hides in his hole and
+  // remains dormant until activated again.
+  wamDisplay_moleTickCount_t
+      ticksUntilAwake; // Mole will wake up (pop out of hole) when this goes
+                       // from 1 -> 0.
+  wamDisplay_moleTickCount_t ticksUntilDormant; // Mole will go dormant (back in
+                                                // hole) this goes 1 -> 0.
+} wamDisplay_moleInfo_t;
+
 // Provide support to set games with varying numbers of moles. This function
 // would be called prior to calling wamDisplay_init();
 void wamDisplay_selectMoleCount(wamDisplay_moleCount_e moleCount);
