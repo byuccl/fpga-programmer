@@ -14,10 +14,10 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 
 #include <stdbool.h>
 
-#ifndef CLOCK_TEXT_SIZE
+#ifndef CLOCKDISPLAY_TEXT_SIZE
 // The default text size, which should be provided to setTextSize() to draw the
 // clock characters. You must support sizes 3-6,
-#define CLOCK_TEXT_SIZE 6
+#define CLOCKDISPLAY_TEXT_SIZE 6
 #endif
 
 // Called only once - performs any necessary inits.
