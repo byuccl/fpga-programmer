@@ -223,6 +223,8 @@ def get_milestones(lab):
     elif lab == "lab4":
         return [
             ("MILESTONE_1_SIZE6", "RUN_PROGRAM_MILESTONE_1_SIZE6"),
+            ("MILESTONE_1_SIZE5", "RUN_PROGRAM_MILESTONE_1_SIZE5"),
+            ("MILESTONE_1_SIZE4", "RUN_PROGRAM_MILESTONE_1_SIZE4"),
             ("MILESTONE_1_SIZE3", "RUN_PROGRAM_MILESTONE_1_SIZE3"),
             ("MILESTONE_2", "RUN_PROGRAM_MILESTONE_2"),
         ]
