@@ -12,9 +12,10 @@ import subprocess
 import sys
 import zipfile
 import getpass
+import re
 
-repo_path = pathlib.Path(__file__).absolute().parent
-test_repo_path = repo_path / "test_repo"
+repo_path = pathlib.Path(__file__).absolute().parent.resolve()
+test_repo_path = (repo_path / "test_repo").resolve()
 build_path = test_repo_path / "build"
 checker_path = repo_path / "checker"
 
@@ -61,16 +62,26 @@ def clone_student_repo(force_clone=False):
 
     if not test_repo_path.is_dir():
         print_color(TermColor.BLUE, "Cloning ecen330 base repo into", test_repo_path)
-        subprocess.run(
+        proc = subprocess.run(
             ["git", "clone", "https://github.com/byu-cpe/ecen330_student", str(test_repo_path),],
             cwd=repo_path,
-            check=True,
+            check=False,
         )
+        if proc.returncode:
+            return False
     else:
         print_color(TermColor.BLUE, "Cleaning test repo", test_repo_path)
-        subprocess.run(["git", "reset", "--hard"], cwd=test_repo_path, check=True)
-        subprocess.run(["git", "clean", "-fdx"], cwd=test_repo_path, check=True)
-        subprocess.run(["git", "pull"], cwd=test_repo_path, check=True)
+        try:
+            subprocess.run(["git", "reset", "--hard"], cwd=test_repo_path, check=True)
+            subprocess.run(["git", "clean", "-fdx"], cwd=test_repo_path, check=True)
+            subprocess.run(["git", "pull"], cwd=test_repo_path, check=True)
+        except subprocess.CalledProcessError:
+            error(
+                "Could not clean the existing test repository.  Delete the",
+                test_repo_path,
+                "directory, or run this script with --force_clone to force delete and re-clone.",
+            )
+    return True
 
 
 def get_files_to_copy_and_zip(lab):
@@ -180,9 +191,32 @@ def build(milestone):
         return False
 
     # Run make
-    proc = subprocess.run(["make", "-j4"], cwd=build_path, check=False)
+    proc = subprocess.run(
+        ["make", "-j4"],
+        cwd=build_path,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    build_output = proc.stdout.decode()
+    print(build_output)
     if proc.returncode:
         return False
+
+    # If user code has warnings, ask if they still want to compile.
+    matches = re.findall(" warning: ", build_output)
+    if matches:
+        input_txt = ""
+        while input_txt not in ["y", "n"]:
+            input_txt = input(
+                TermColor.YELLOW
+                + "Your code has "
+                + str(len(matches))
+                + " warning(s).  You will lose a coding standard point for each warning.  Are you sure you want to continue? (y/n) "
+                + TermColor.END
+            ).lower()
+        if input_txt == "n":
+            error("User cancelled zip process.")
 
     return True
 
@@ -258,10 +292,12 @@ def main():
     parser.add_argument(
         "--no_run", action="store_true", help="Test the lab build, but don't run the emualtor"
     )
+    parser.add_argument(
+        "--force_clone",
+        action="store_true",
+        help="Enable this flag to delete and re-clone the test repo, even if it exists.",
+    )
     args = parser.parse_args()
-
-    # Delete existing repo
-    shutil.rmtree(test_repo_path, ignore_errors=True)
 
     # First format student's code
     format_code()
@@ -271,6 +307,7 @@ def main():
 
     # Loop through configs
     for (config_name, config_define) in get_milestones(args.lab):
+        build_and_run = True
         if args.no_run:
             print_color(TermColor.BLUE, "Now Testing", config_name)
         else:
@@ -283,7 +320,20 @@ def main():
             )
 
         # Clone/clean 330 repo
-        clone_student_repo()
+        if not clone_student_repo(force_clone=args.force_clone):
+            input_txt = ""
+            while input_txt not in ["y", "n"]:
+                input_txt = input(
+                    TermColor.YELLOW
+                    + "Could not clone Github repo.  Perhaps you are not connected to the internet. "
+                    "It is recommended that you cancel the process, connect to the internet, and retry. "
+                    "If you proceed, the generated zip file will be untested, and may not build properly on the TA's evaluation system. "
+                    "Are you sure you want to proceed? (y/n) " + TermColor.END
+                ).lower()
+            if input_txt == "n":
+                error("User cancelled zip process.")
+            else:
+                break
 
         # Copy over necessary files to test repo
         copy_solution_files(files)

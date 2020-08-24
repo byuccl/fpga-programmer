@@ -95,6 +95,7 @@ int main() {
       if (personalInterruptCount >= MAX_INTERRUPT_COUNT)
         break;
       utils_sleep();
+      fflush(stdout);
     }
   }
   interrupts_disableArmInts();
