@@ -1,5 +1,7 @@
 # BYU ECEN 330 Student Template Repository
 
+[![Build Status](https://travis-ci.com/byu-cpe/ecen330_student.svg?branch=master)](https://travis-ci.com/byu-cpe/ecen330_student)
+
 ```
 This software is provided for student assignment use in the Department of
 Electrical and Computer Engineering, Brigham Young University, Utah, USA.
