@@ -292,12 +292,10 @@ def main():
     parser.add_argument(
         "--no_run", action="store_true", help="Test the lab build, but don't run the emualtor"
     )
-    parser.add_argument(
-        "--force_clone",
-        action="store_true",
-        help="Enable this flag to delete and re-clone the test repo, even if it exists.",
-    )
     args = parser.parse_args()
+
+    # Delete existing repo
+    shutil.rmtree(test_repo_path, ignore_errors=True)
 
     # First format student's code
     format_code()
@@ -320,7 +318,7 @@ def main():
             )
 
         # Clone/clean 330 repo
-        if not clone_student_repo(force_clone=args.force_clone):
+        if not clone_student_repo():
             input_txt = ""
             while input_txt not in ["y", "n"]:
                 input_txt = input(
