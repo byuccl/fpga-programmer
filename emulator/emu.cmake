@@ -2,6 +2,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS Gui REQUIRED)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 
+add_definitions(-DQT_NO_VERSION_TAGGING)
+
 # add_compile_options("-O2")
 # add_compile_options("-Wall")
 # add_compile_options("-W")
