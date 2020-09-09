@@ -51,36 +51,28 @@ def format_code():
     """ Run ./format.py to format student code """
     print_color(TermColor.BLUE, "Formatting code")
 
-    subprocess.run(["./format.py",], cwd=repo_path, check=True)
+    subprocess.run(
+        ["./format.py",], cwd=repo_path, check=True,
+    )
 
 
-def clone_student_repo(force_clone=False):
+def clone_student_repo():
     """ Clone a clean 330 student repo into 'test_repo_path', deleting existing one if it exists """
 
-    if test_repo_path.is_dir() and force_clone:
-        shutil.rmtree(test_repo_path, ignore_errors=True)
+    # Delete existing repo
+    shutil.rmtree(test_repo_path, ignore_errors=True)
 
-    if not test_repo_path.is_dir():
-        print_color(TermColor.BLUE, "Cloning ecen330 base repo into", test_repo_path)
-        proc = subprocess.run(
-            ["git", "clone", "https://github.com/byu-cpe/ecen330_student", str(test_repo_path),],
-            cwd=repo_path,
-            check=False,
-        )
-        if proc.returncode:
-            return False
-    else:
-        print_color(TermColor.BLUE, "Cleaning test repo", test_repo_path)
-        try:
-            subprocess.run(["git", "reset", "--hard"], cwd=test_repo_path, check=True)
-            subprocess.run(["git", "clean", "-fdx"], cwd=test_repo_path, check=True)
-            subprocess.run(["git", "pull"], cwd=test_repo_path, check=True)
-        except subprocess.CalledProcessError:
-            error(
-                "Could not clean the existing test repository.  Delete the",
-                test_repo_path,
-                "directory, or run this script with --force_clone to force delete and re-clone.",
-            )
+    if test_repo_path.is_dir():
+        error("Could not delete", test_repo_path)
+
+    print_color(TermColor.BLUE, "Cloning ecen330 base repo into", test_repo_path)
+    proc = subprocess.run(
+        ["git", "clone", "https://github.com/byu-cpe/ecen330_student", str(test_repo_path),],
+        cwd=repo_path,
+        check=False,
+    )
+    if proc.returncode:
+        return False
     return True
 
 
@@ -182,6 +174,11 @@ def build(milestone):
     else:
         print_color(TermColor.BLUE, "Trying to build")
 
+    print_color(TermColor.BLUE, "Removing build directory (" + str(build_path) + ")")
+    shutil.rmtree(build_path)
+    print_color(TermColor.BLUE, "Creating build directory (" + str(build_path) + ")")
+    build_path.mkdir()
+
     # Run cmake
     cmake_cmd = ["cmake", ".."]
     if milestone is not None:
@@ -223,8 +220,10 @@ def build(milestone):
 
 def run(lab):
     """ Run the lab program in the emulator """
-
-    subprocess.run([str(build_path / lab / (lab + ".elf"))], check=True)
+    try:
+        subprocess.run([str(build_path / lab / (lab + ".elf"))], check=True)
+    except KeyboardInterrupt:
+        print()
 
 
 def zip(lab, files):
@@ -294,66 +293,66 @@ def main():
     )
     args = parser.parse_args()
 
-    # Delete existing repo
-    shutil.rmtree(test_repo_path, ignore_errors=True)
-
     # First format student's code
     format_code()
 
     # Get a list of files need to build and zip
     files = get_files_to_copy_and_zip(args.lab)
 
-    # Loop through configs
-    for (config_name, config_define) in get_milestones(args.lab):
-        build_and_run = True
-        if args.no_run:
-            print_color(TermColor.BLUE, "Now Testing", config_name)
-        else:
-            input(
-                TermColor.BLUE
-                + "Now Testing "
-                + config_name
-                + ". Hit <Enter> to continue."
-                + TermColor.END
-            )
+    # Clone/clean 330 repo
+    if not clone_student_repo():
+        input_txt = ""
+        while input_txt not in ["y", "n"]:
+            input_txt = input(
+                TermColor.YELLOW
+                + "Could not clone Github repo.  Perhaps you are not connected to the internet. "
+                "It is recommended that you cancel the process, connect to the internet, and retry. "
+                "If you proceed, the generated zip file will be untested, and may not build properly on the TA's evaluation system. "
+                "Are you sure you want to proceed? (y/n) " + TermColor.END
+            ).lower()
+        if input_txt == "n":
+            error("User cancelled zip process.")
 
-        # Clone/clean 330 repo
-        if not clone_student_repo():
-            input_txt = ""
-            while input_txt not in ["y", "n"]:
-                input_txt = input(
-                    TermColor.YELLOW
-                    + "Could not clone Github repo.  Perhaps you are not connected to the internet. "
-                    "It is recommended that you cancel the process, connect to the internet, and retry. "
-                    "If you proceed, the generated zip file will be untested, and may not build properly on the TA's evaluation system. "
-                    "Are you sure you want to proceed? (y/n) " + TermColor.END
-                ).lower()
-            if input_txt == "n":
-                error("User cancelled zip process.")
-            else:
-                break
-
+    else:
         # Copy over necessary files to test repo
         copy_solution_files(files)
 
-        # See if the code builds
-        if build(config_define):
-            # Run it
-            if not args.no_run:
-                print_color(TermColor.BLUE, "Running", args.lab, config_name)
-                run(args.lab)
-        else:
-            s = ""
-            while s not in ("y", "n"):
-                s = input(
-                    TermColor.RED
-                    + "Build failed for "
+        # Loop through configs
+        for (config_name, config_define) in get_milestones(args.lab):
+            build_and_run = True
+            if args.no_run:
+                print_color(TermColor.BLUE, "Now Testing", config_name)
+            else:
+                input(
+                    TermColor.BLUE
+                    + "Now Testing "
                     + config_name
-                    + ". Continue? (y/n)"
+                    + ". Hit <Enter> to continue."
                     + TermColor.END
-                ).lower()
-            if s == "n":
-                sys.exit(0)
+                )
+
+            # See if the code builds
+            if build(config_define):
+                # Run it
+                if not args.no_run:
+                    print_color(TermColor.BLUE, "Running", args.lab, config_name)
+                    print_color(
+                        TermColor.BLUE,
+                        "If the emulator won't close, press Ctrl+C in this terminal.",
+                    )
+                    run(args.lab)
+            else:
+                s = ""
+                while s not in ("y", "n"):
+                    s = input(
+                        TermColor.RED
+                        + "Build failed for "
+                        + config_name
+                        + ". Continue? (y/n)"
+                        + TermColor.END
+                    ).lower()
+                if s == "n":
+                    sys.exit(0)
 
     # Zip it
     zip_relpath = zip(args.lab, files)
