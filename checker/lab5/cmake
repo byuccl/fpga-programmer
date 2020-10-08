@@ -7,5 +7,5 @@ ELSEIF(RUN_PROGRAM_MILESTONE_3)
 ENDIF()
 
 add_executable(lab5.elf main.c ticTacToeControl.c ticTacToeDisplay.c minimax.c testBoards.c)
-target_link_libraries(lab5.elf ${330_LIBS} buttons_switches)
+target_link_libraries(lab5.elf ${330_LIBS} buttons_switches intervalTimer)
 set_target_properties(lab5.elf PROPERTIES LINKER_LANGUAGE CXX)
