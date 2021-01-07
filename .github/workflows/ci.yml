@@ -38,7 +38,7 @@ jobs:
     - name: Check C/C++ formatting
       run: ./format.py --check --all
 
-   check_and_zip:
+  check_and_zip:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
