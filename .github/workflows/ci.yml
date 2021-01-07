@@ -1,0 +1,46 @@
+name: CI
+on: push
+
+jobs:
+  build_emulator:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install packages
+      run: |
+        sudo pip3 install cmake
+        sudo apt-get install -y qt5-default
+
+    - name: Compile
+      run: cd build && cmake .. && make -j4
+  
+  build_zybo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install packages
+      run: |
+        sudo pip3 install cmake
+        sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+
+    - name: Compile
+      run: cd build && cmake .. -DBOARD=1 && make -j4
+  
+
+  check_format:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check C/C++ formatting
+      run: ./format.py --check --all
+
+   check_and_zip:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run check_and_zip.py
+      run: ./check_and_zip.py --no_run lab1
