@@ -11,8 +11,7 @@ jobs:
       run: |
         sudo pip3 install cmake
         sudo apt-get update
-        sudo apt-get install -y qt5-default
-
+        sudo apt-get install -y qt5-default gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib clang-format-6.0
 
   build_emulator:
     needs: setup
@@ -31,10 +30,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Compile
       run: cd build && cmake .. -DBOARD=1 && make -j4
-  
 
   check_format:
     runs-on: ubuntu-latest
+    needs: setup
     steps:
     - uses: actions/checkout@v2
     - name: Check C/C++ formatting
@@ -42,6 +41,7 @@ jobs:
 
   check_and_zip:
     runs-on: ubuntu-latest
+    needs: setup
     steps:
     - uses: actions/checkout@v2
     - name: Run check_and_zip.py
