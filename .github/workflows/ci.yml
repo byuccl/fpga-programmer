@@ -4,7 +4,7 @@ on: push
 jobs:
   setup:
     runs-on: ubuntu-latest
-    steps:
+    all:
     - uses: actions/checkout@v2
     - name: Install packages
       run: |
