@@ -2,9 +2,8 @@ name: CI
 on: push
 
 jobs:
-  build_emulator:
+  setup:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
 
@@ -13,6 +12,12 @@ jobs:
         sudo pip3 install cmake
         sudo apt-get install -y qt5-default
 
+
+  build_emulator:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Compile
       run: cd build && cmake .. && make -j4
   
