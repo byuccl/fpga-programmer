@@ -11,6 +11,7 @@ SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS)
 add_compile_options("-march=armv7-a")
 add_compile_options("-mfpu=vfpv3")
 add_compile_options("-mfloat-abi=hard")
+add_compile_options("-O2")
 
 add_link_options("-march=armv7-a")
 add_link_options("-mfpu=vfpv3")
