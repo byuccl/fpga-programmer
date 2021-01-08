@@ -13,8 +13,8 @@ jobs:
         sudo apt-get install -y qt5-default gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib clang-format-6.0
     # - name: Compile emulator
     #   run: cd build && cmake .. && make -j4  
-    - name: Compile Zybo
-      run: cd build && cmake .. -DBOARD=1 && make -j4
+    # - name: Compile Zybo
+    #   run: cd build && cmake .. -DBOARD=1 && make -j4
     - name: Check C/C++ formatting
       run: ./format.py --check --all
     - name: Run check_and_zip.py
