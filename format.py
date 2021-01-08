@@ -8,7 +8,7 @@ import sys
 
 repo_root_dir = pathlib.Path(__file__).parent.absolute()
 
-dirs_to_format = ["lab", "my_libs"]
+dirs_to_format = ["lab", "my_libs", "lasertag"]
 extensions_to_format = [".c", ".h"]
 
 dirs_to_exclude_from_all = ["build/", "hw/", "zybo/xil_arm_toolchain/bsp"]
