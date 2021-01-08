@@ -52,7 +52,11 @@ def format_code():
     print_color(TermColor.BLUE, "Formatting code")
 
     subprocess.run(
-        ["./format.py",], cwd=repo_path, check=True,
+        [
+            "./format.py",
+        ],
+        cwd=repo_path,
+        check=True,
     )
 
 
@@ -67,7 +71,12 @@ def clone_student_repo():
 
     print_color(TermColor.BLUE, "Cloning ecen330 base repo into", test_repo_path)
     proc = subprocess.run(
-        ["git", "clone", "https://github.com/byu-cpe/ecen330_student", str(test_repo_path),],
+        [
+            "git",
+            "clone",
+            "https://github.com/byu-cpe/ecen330_student",
+            str(test_repo_path),
+        ],
         cwd=repo_path,
         check=False,
     )
@@ -86,6 +95,7 @@ def get_files_to_copy_and_zip(lab):
     src_libs_path = repo_path / "my_libs"
     dest_libs_path = test_repo_path / "my_libs"
     dest_lab_path = test_repo_path / lab
+    lasertag_path = repo_path / "lasertag"
 
     # Build a list of files
     # Each entry in this list is a tuple in format (src - pathlib.Path, dest - pathlib.Path, include_in_zip? - boolean)
@@ -143,13 +153,35 @@ def get_files_to_copy_and_zip(lab):
         files.append((src_libs_path / "intervalTimer.c", dest_libs_path, False))
         files.append((src_lab_path / "wamControl.c", dest_lab_path, True))
         files.append((src_lab_path / "wamDisplay.c", dest_lab_path, True))
+    elif lab == "390m3-1":
+        files.append((lasertag_path / "filter.c", None, True))
+    elif lab == "390m3-2":
+        files.append((lasertag_path / "filter.c", None, True))
+        files.append((lasertag_path / "hitLedTimer.c", None, True))
+        files.append((lasertag_path / "lockoutTimer.c", None, True))
+        files.append((lasertag_path / "transmitter.c", None, True))
+        files.append((lasertag_path / "trigger.c ", None, True))
+    elif lab == "390m3-3":
+        files.append((lasertag_path / "detector.c", None, True))
+        files.append((lasertag_path / "autoReloadTimer.c", None, True))
+        files.append((lasertag_path / "invincibilityTimer.c", None, True))
+        files.append((lasertag_path / "ledTimer.c", None, True))
+        files.append((lasertag_path / "lockoutTimer.c", None, True))
+        files.append((lasertag_path / "isr.c", None, True))
+    elif lab == "390m5":
+        files.append((lasertag_path / "gameModes.c", None, True))
 
-    print(
-        len(files),
-        "files to copy,",
-        len([f for f in files if f[2]]),
-        "of these will be included in the submission zip archive.",
-    )
+    if lab.startswith("390"):
+        print(
+            len([f for f in files if f[2]]), "files to be included in the submission zip archive."
+        )
+    else:
+        print(
+            len(files),
+            "files to copy,",
+            len([f for f in files if f[2]]),
+            "of these will be included in the submission zip archive.",
+        )
     return files
 
 
@@ -238,6 +270,8 @@ def zip(lab, files):
         print("Created new zip file")
         # Loop through files that are marked for zip (f[2] == True)
         for f in (f for f in files if f[2]):
+            if not f[0].is_file():
+                error(f[0].relative_to(repo_path), "does not exist")
             print("Adding", f[0].relative_to(repo_path))
             zf.write(f[0], arcname=f[0].name)
 
@@ -287,7 +321,22 @@ def main():
     """ Copy files into temp repo, build and run lab """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("lab", choices=["lab1", "lab2", "lab3", "lab4", "lab5", "lab6", "lab7"])
+    parser.add_argument(
+        "lab",
+        choices=[
+            "lab1",
+            "lab2",
+            "lab3",
+            "lab4",
+            "lab5",
+            "lab6",
+            "lab7",
+            "390m3-1",
+            "390m3-2",
+            "390m3-3",
+            "390m5",
+        ],
+    )
     parser.add_argument(
         "--no_run", action="store_true", help="Test the lab build, but don't run the emualtor"
     )
@@ -299,60 +348,62 @@ def main():
     # Get a list of files need to build and zip
     files = get_files_to_copy_and_zip(args.lab)
 
-    # Clone/clean 330 repo
-    if not clone_student_repo():
-        input_txt = ""
-        while input_txt not in ["y", "n"]:
-            input_txt = input(
-                TermColor.YELLOW
-                + "Could not clone Github repo.  Perhaps you are not connected to the internet. "
-                "It is recommended that you cancel the process, connect to the internet, and retry. "
-                "If you proceed, the generated zip file will be untested, and may not build properly on the TA's evaluation system. "
-                "Are you sure you want to proceed? (y/n) " + TermColor.END
-            ).lower()
-        if input_txt == "n":
-            error("User cancelled zip process.")
+    # For 390, we don't build/run anything, so just skip to the zip process
+    if not args.lab.startswith("390"):
+        # Clone/clean 330 repo
+        if not clone_student_repo():
+            input_txt = ""
+            while input_txt not in ["y", "n"]:
+                input_txt = input(
+                    TermColor.YELLOW
+                    + "Could not clone Github repo.  Perhaps you are not connected to the internet. "
+                    "It is recommended that you cancel the process, connect to the internet, and retry. "
+                    "If you proceed, the generated zip file will be untested, and may not build properly on the TA's evaluation system. "
+                    "Are you sure you want to proceed? (y/n) " + TermColor.END
+                ).lower()
+            if input_txt == "n":
+                error("User cancelled zip process.")
 
-    else:
-        # Copy over necessary files to test repo
-        copy_solution_files(files)
+        else:
+            # Copy over necessary files to test repo
+            copy_solution_files(files)
 
-        # Loop through configs
-        for (config_name, config_define) in get_milestones(args.lab):
-            build_and_run = True
-            if args.no_run:
-                print_color(TermColor.BLUE, "Now Testing", config_name)
-            else:
-                input(
-                    TermColor.BLUE
-                    + "Now Testing "
-                    + config_name
-                    + ". Hit <Enter> to continue."
-                    + TermColor.END
-                )
-
-            # See if the code builds
-            if build(config_define):
-                # Run it
-                if not args.no_run:
-                    print_color(TermColor.BLUE, "Running", args.lab, config_name)
-                    print_color(
-                        TermColor.BLUE,
-                        "If the emulator won't close, press Ctrl+C in this terminal.",
-                    )
-                    run(args.lab)
-            else:
-                s = ""
-                while s not in ("y", "n"):
-                    s = input(
-                        TermColor.RED
-                        + "Build failed for "
+            # Loop through configs
+            for (config_name, config_define) in get_milestones(args.lab):
+                build_and_run = True
+                if args.no_run:
+                    print_color(TermColor.BLUE, "Now Testing", config_name)
+                else:
+                    input(
+                        TermColor.BLUE
+                        + "Now Testing "
                         + config_name
-                        + ". Continue? (y/n)"
+                        + ". Hit <Enter> to continue."
                         + TermColor.END
-                    ).lower()
-                if s == "n":
-                    sys.exit(0)
+                    )
+
+                # See if the code builds
+                if build(config_define):
+                    # Run it
+                    if not args.no_run:
+                        print_color(TermColor.BLUE, "Running", args.lab, config_name)
+                        print_color(
+                            TermColor.BLUE,
+                            "If the emulator won't close, press Ctrl+C in this terminal.",
+                        )
+                        run(args.lab)
+                else:
+                    s = ""
+                    while s not in ("y", "n"):
+                        s = input(
+                            TermColor.RED
+                            + "Build failed for "
+                            + config_name
+                            + ". Continue? (y/n)"
+                            + TermColor.END
+                        ).lower()
+                    if s == "n":
+                        sys.exit(0)
 
     # Zip it
     zip_relpath = zip(args.lab, files)
