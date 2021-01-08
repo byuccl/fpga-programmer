@@ -2,9 +2,9 @@ name: CI
 on: push
 
 jobs:
-  setup:
+  all:
     runs-on: ubuntu-latest
-    all:
+    steps:
     - uses: actions/checkout@v2
     - name: Install packages
       run: |
