@@ -25,7 +25,7 @@ if (BOARD)
 
     # Provide a precompiled, known-good intervalTimer, buttons, switches, queue.
     # Will want to delete this for 330 - only use this for lasertag.
-    link_directories(lasertag_libs)
+    link_directories(zybo/lasertag_libs)
     
     # Set this variable to the name of libraries that board executables needs to link to
     set(330_LIBS c gcc zybo xil c)
