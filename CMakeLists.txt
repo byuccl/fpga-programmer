@@ -8,6 +8,7 @@ include_directories(my_libs)
 # add_compile_options(-Wall -Wextra -pedantic)
 # add_compile_options(-Wall -Wextra -pedantic -Werror)
 
+set(BOARD 1)
 
 if (BOARD)
     # These are the options used to compile and run on the physical Zybo board    
