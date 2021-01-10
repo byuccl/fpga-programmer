@@ -1,9 +1,11 @@
 /*
- * main2.c
- *
- *  Created on: Jan 22, 2015
- *      Author: hutch
- */
+This software is provided for student assignment use in the Department of
+Electrical and Computer Engineering, Brigham Young University, Utah, USA.
+Users agree to not re-host, or redistribute the software, in source or binary
+form, to other persons or other institutions. Users may modify and use the
+source code for personal or educational use.
+For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
+*/
 
 // Uncomment the line below to run a comprehensive test of the filters.
 #define FILTER_TEST_RUN // Just run the filter test.

@@ -1,9 +1,11 @@
 /*
- * histogram.h
- *
- *  Created on: Jan 1, 2015
- *      Author: hutch
- */
+This software is provided for student assignment use in the Department of
+Electrical and Computer Engineering, Brigham Young University, Utah, USA.
+Users agree to not re-host, or redistribute the software, in source or binary
+form, to other persons or other institutions. Users may modify and use the
+source code for personal or educational use.
+For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
+*/
 
 #ifndef HISTOGRAM_H_
 #define HISTOGRAM_H_
@@ -40,13 +42,13 @@
   20 // Allow some room for a label above each bar (in pixels)
 
 //#define HISTOGRAM_MAX_BAR_COUNT 10		// You can have up to 10 bars on
-//your histogram.
+// your histogram.
 #define HISTOGRAM_MAX_BAR_COUNT                                                \
   25 // You can have up to 25 bars on your histogram.
-///#define HISTOGRAM_BAR_COUNT 10				// This is the number of
-///histogram bars that you want.
-//#define HISTOGRAM_BAR_X_GAP 5					// This is the gap,
-//in pixels, between each bar.
+///#define HISTOGRAM_BAR_COUNT 10				// This is the number
+///of histogram bars that you want.
+//#define HISTOGRAM_BAR_X_GAP 5					// This is the
+//gap, in pixels, between each bar.
 #define HISTOGRAM_BAR_X_GAP 1 // This is the gap, in pixels, between each bar.
 #define HISTOGRAM_BAR_Y_GAP                                                    \
   (DISPLAY_CHAR_HEIGHT *                                                       \

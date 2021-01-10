@@ -1,9 +1,12 @@
 /*
- * sound.c
- *
- *  Created on: May 8, 2017
- *      Author: hutch
- */
+This software is provided for student assignment use in the Department of
+Electrical and Computer Engineering, Brigham Young University, Utah, USA.
+Users agree to not re-host, or redistribute the software, in source or binary
+form, to other persons or other institutions. Users may modify and use the
+source code for personal or educational use.
+For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
+*/
+
 #include "sound.h"
 #include "interrupts.h" // Just for sound_runTest().
 #include "sounds/bcfire01_48k.wav.h"
