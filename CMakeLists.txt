@@ -10,6 +10,12 @@ include_directories(my_libs)
 
 set(BOARD 1)
 
+if (SDCARD)
+    set (XIL_LIB xil_uart)
+else()
+    set(XIL_LIB xil)
+endif()
+
 if (BOARD)
     # These are the options used to compile and run on the physical Zybo board    
     # You will need to compile using "cmake -DBOARD=1"
@@ -29,13 +35,13 @@ if (BOARD)
     link_directories(zybo/lasertag_libs)
     
     # Set this variable to the name of libraries that board executables needs to link to
-    set(330_LIBS c gcc zybo xil c)
+    set(330_LIBS c gcc zybo ${XIL_LIB} c)
 
     # Pass the BOARD variable to the compiler, so it can be used in #ifdef statements
     add_compile_definitions(ZYBO_BOARD=1)
 
     # Set this variable to the path of the xilinx Vitis tool
-    set(XIL_VITIS_PATH /opt/Xilinx/Vitis/2019.2)
+    set(XIL_VIVADO_PATH /opt/Xilinx/Vivado/2019.2)
 else()
     # These options are required if you want to use the Zybo board emulator    
 
@@ -64,8 +70,23 @@ add_subdirectory(lasertag)
 # make BOOT.bin ELF_PATH=...
 # This target is used to create SD card images (ECEN 390 only).
 add_custom_target(BOOT.bin)
+if (SDCARD)
 add_custom_command(TARGET BOOT.bin
     COMMAND if [ -z \${ELF_PATH} ]\; then echo '\\033[0;31mYou need to specify an ELF_PATH.  For example: make BOOT.bin ELF_PATH=lab1/lab1.elf\\033[0m'\;exit 1\; fi
     COMMAND if [ ! -f \${ELF_PATH} ]\; then echo '\\033[0;31mThe file \${ELF_PATH} does not exist.\\033[0m'\;exit 1\; fi
-    COMMAND ${XIL_VITIS_PATH}/bin/sdcard_gen --xpfm ../hw/platform/330_platform.xpfm --sys_config 330_platform --bif ../hw/platform/sw/330_platform/boot/330_platform.bif --bitstream ../hw/330_hw_system.bit --elf \${ELF_PATH},ps7_cortexa9_0
+    # COMMAND ${XIL_VITIS_PATH}/bin/sdcard_gen --xpfm ../hw/platform/330_platform.xpfm --sys_config 330_platform --bif ../hw/platform/sw/330_platform/boot/330_platform.bif --bitstream ../hw/330_hw_system.bit --elf \${ELF_PATH},ps7_cortexa9_0
+
+    COMMAND echo '//arch = zynq; split = false; format = BIN' > 330.bif
+    COMMAND echo 'the_ROM_image:' >> 330.bif
+    COMMAND echo '{' >> 330.bif
+    COMMAND echo '  [bootloader]../hw/fsbl.elf' >> 330.bif
+    COMMAND echo '  ../hw/330_hw_system.bit' >> 330.bif
+    COMMAND echo '  \${ELF_PATH}' >> 330.bif
+    COMMAND echo '}' >> 330.bif
+    COMMAND ${XIL_VIVADO_PATH}/bin/bootgen -image 330.bif -arch zynq -o BOOT.bin -w on
+) 
+else()
+add_custom_command(TARGET BOOT.bin
+    COMMAND echo '\\033[0;31mYou cannot create an SD card boot file.  cmake was not run with -DSDCARD=1\\033[0m'\;exit 1\;
 )
+endif()
