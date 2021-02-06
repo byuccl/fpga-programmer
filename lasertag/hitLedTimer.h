@@ -16,8 +16,8 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 // It is used to lock-out the detector once a hit has been detected.
 // This ensure that only one hit is detected per 1/2-second interval.
 
-#define HIT_LED_TIMER_EXPIRE_VALUE 100000 // Defined in terms of 100 kHz ticks.
-#define HIT_LED_TIMER_OUTPUT_PIN 11       // JF-3
+#define HIT_LED_TIMER_EXPIRE_VALUE 50000 // Defined in terms of 100 kHz ticks.
+#define HIT_LED_TIMER_OUTPUT_PIN 11      // JF-3
 
 // Calling this starts the timer.
 void hitLedTimer_start();
