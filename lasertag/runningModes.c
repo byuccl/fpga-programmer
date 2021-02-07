@@ -34,6 +34,11 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include <stdlib.h>
 #include <string.h>
 
+// Uncomment this code so that the code in the various modes will
+// ignore your own frequency. You still must properly implement
+// the ability to ignore frequencies in detector.c
+//#define IGNORE_OWN_FREQUENCY 1
+
 #define MAX_HIT_COUNT 100000
 
 #define MAX_BUFFER_SIZE 100 // Used for a generic message buffer.

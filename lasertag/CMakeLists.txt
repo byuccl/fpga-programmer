@@ -2,9 +2,9 @@ add_executable(lasertag.elf
 main.c
 filterTest.c
 histogram.c
+sound.c
 # filter.c 
 # queue_test.c
-# sound.c
 # timer_ps.c
 # runningModes.c
 )
