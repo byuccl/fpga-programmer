@@ -3,9 +3,7 @@ main.c
 filterTest.c
 histogram.c
 sound.c
-# filter.c 
-# queue_test.c
-# timer_ps.c
+timer_ps.c
 # runningModes.c
 )
 
