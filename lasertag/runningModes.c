@@ -34,7 +34,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_HIT_COUNT 100
+#define MAX_HIT_COUNT 100000
 
 #define MAX_BUFFER_SIZE 100 // Used for a generic message buffer.
 
@@ -61,7 +61,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define RUNNING_MODE_SCREEN_Y_ORIGIN 0 // Origin for reporting text.
 
 // Detector should be invoked this often for good performance.
-#define SUGGESTED_DETECTOR_INVOCATIONS_PER_SECOND 70000
+#define SUGGESTED_DETECTOR_INVOCATIONS_PER_SECOND 30000
 // ADC queue should have no more than this number of unprocessed elements for
 // good performance.
 #define SUGGESTED_REMAINING_ELEMENT_COUNT 500
@@ -179,7 +179,7 @@ void runningModes_initAll() {
   isr_init();
   hitLedTimer_init();
   trigger_init();
-  ledTimer_init();
+  lockoutTimer_init();
 }
 
 // Returns the current switch-setting

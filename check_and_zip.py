@@ -163,9 +163,9 @@ def get_files_to_copy_and_zip(lab):
         files.append((lasertag_path / "trigger.c", None, True))
     elif lab == "390m3-3":
         files.append((lasertag_path / "detector.c", None, True))
-        files.append((lasertag_path / "autoReloadTimer.c", None, True))
-        files.append((lasertag_path / "invincibilityTimer.c", None, True))
-        files.append((lasertag_path / "ledTimer.c", None, True))
+#        files.append((lasertag_path / "autoReloadTimer.c", None, True))
+#        files.append((lasertag_path / "invincibilityTimer.c", None, True))
+#        files.append((lasertag_path / "ledTimer.c", None, True))
         files.append((lasertag_path / "lockoutTimer.c", None, True))
         files.append((lasertag_path / "isr.c", None, True))
     elif lab == "390m5":
