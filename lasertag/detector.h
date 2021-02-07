@@ -93,6 +93,9 @@ double detector_getScaledAdcValue(isr_AdcValue_t adcValue);
  ****************** Test Routines **********************
  ******************************************************/
 
+// Students implement this as part of Milestone 3, Task 3.
+void detector_runTest();
+
 // Returns 0 if passes, non-zero otherwise.
 // if printTestMessages is true, print out detailed status messages.
 // detector_status_t detector_testSort(sortTestFunctionPtr testSortFunction,

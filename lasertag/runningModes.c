@@ -7,7 +7,7 @@ source code for personal or educational use.
 For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 */
 
-include "runningModes.h"
+#include "runningModes.h"
 #include "detector.h"
 #include "display.h"
 #include "filter.h"
@@ -70,8 +70,8 @@ include "runningModes.h"
 #define INTERRUPTS_CURRENTLY_ENABLED true
 #define INTERRUPTS_CURRENTLY_DISABLE false
 
-    // Keep track of detector invocations.
-    static uint32_t detectorInvocationCount = 0;
+// Keep track of detector invocations.
+static uint32_t detectorInvocationCount = 0;
 
 // This array is indexed by frequency number. If array-element[freq_no] == true,
 // the frequency is ignored, e.g., no hit will ever occur at that frequency.
