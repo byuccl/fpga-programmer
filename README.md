@@ -8,7 +8,7 @@ Install openocd:
 
 ### Running
 ```
-./fpga_programmer.py <boards> <bit_path> <elf_path>
+./fpga_programmer.py <board> <bit_path> <elf_path>
 ```
 
 Currently supported boards:
