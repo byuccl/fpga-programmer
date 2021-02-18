@@ -22,6 +22,7 @@ optional arguments:
 
 Currently supported boards:
   * `zedboard`
+  * `zybo`
 
 ### Todo List of Features
 * Add support for PYNQ, Zybo and Ultra96 boards.
