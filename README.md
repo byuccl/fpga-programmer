@@ -20,9 +20,17 @@ optional arguments:
   --elf ELF    Executable (.elf) path
 ```
 
+
 Currently supported boards:
   * `zedboard`
   * `zybo`
+
+#### Hardware Only
+If you only want to program hardware, just provide the `--bit` bitstream and ignore the software arguments.
+
+#### Running Software 
+You can run software by specifying just the `--elf` option.  The `boards` folder already contains basic bitstream and FSBL files, so you don't need to provide these options unless you need specific hardware or bootloader code.
+
 
 ### Todo List of Features
 * Add support for PYNQ, Zybo and Ultra96 boards.
