@@ -8,13 +8,20 @@ Install openocd:
 
 ### Running
 ```
-./fpga_programmer.py <board> <bit_path> <elf_path>
+usage: fpga_programmer.py [-h] [--bit BIT] [--fsbl FSBL] [--elf ELF] board
+
+positional arguments:
+  board
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --bit BIT    FPGA bitstream (.bit) path
+  --fsbl FSBL  First stage bootloeader (.elf) path
+  --elf ELF    Executable (.elf) path
 ```
 
 Currently supported boards:
   * `zedboard`
 
 ### Todo List of Features
-* Support programming hardware only (not software)
 * Add support for PYNQ, Zybo and Ultra96 boards.
-* Command-line argument for custom FSBL

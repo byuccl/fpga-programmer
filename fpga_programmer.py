@@ -6,8 +6,8 @@ import pathlib
 import subprocess
 
 ROOT_PATH = pathlib.Path(__file__).resolve().parent
-BOARDS = ["zedboard"]
-PATHS_CFG_PATH = "paths.cfg"
+BOARDS_PATH = ROOT_PATH / "boards"
+SETUP_CFG_PATH = "setup.cfg"
 
 
 class TermColors:
@@ -39,32 +39,72 @@ def check_file_exists(path):
         error(path, "does not exist")
 
 
+class Board:
+    def __init__(self, name):
+        self.name = name
+        board_path = BOARDS_PATH / name
+        self.cfg_path = board_path / (name + ".cfg")
+        check_file_exists(self.cfg_path)
+
+        self.fsbl_path = board_path / "fsbl.elf"
+        self.bit_path = board_path / (name + ".bit")
+
+
 def main():
+    boards = []
+
+    boards.append(Board("zedboard"))
+    boards.append(Board("zybo"))
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("board", choices=BOARDS)
-    parser.add_argument("bit", help="FPGA bitstream (.bit) path")
-    parser.add_argument("elf", help="FPGA bitstream (.bit) path")
+    parser.add_argument("board", choices=[b.name for b in boards])
+    parser.add_argument("--bit", help="FPGA bitstream (.bit) path")
+    parser.add_argument("--fsbl", help="First stage bootloeader (.elf) path")
+    parser.add_argument("--elf", help="Executable (.elf) path")
     args = parser.parse_args()
 
+    # Board
+    board = [b for b in boards if b.name == args.board][0]
+    cfg_path = board.cfg_path
+
     # Validate bitstream path
-    if not args.bit.endswith(".bit"):
-        error("bit file should have .bit suffix")
-    bit_path = pathlib.Path(args.bit)
+    if args.bit:
+        if not args.bit.endswith(".bit"):
+            error("bit file should have .bit suffix")
+        bit_path = pathlib.Path(args.bit)
+    else:
+        bit_path = board.bit_path
+        print_color(TermColors.YELLOW, "Using default bitstream", bit_path.relative_to(ROOT_PATH))
     check_file_exists(bit_path)
 
-    # Get FSBL
-    fsbl_path = ROOT_PATH / "test" / "fsbl_zedboard.elf"
-    check_file_exists(fsbl_path)
+    # Check if we are programming software
+    sw = args.fsbl or args.elf
 
-    elf_path = pathlib.Path(args.elf)
-    check_file_exists(elf_path)
+    if sw:
+        # Get FSBL
+        if args.fsbl:
+            if not args.fsbl.endswith(".elf"):
+                error("FSBL file should have .elf suffix")
+            fsbl_path = pathlib.Path(args.fsbl)
+        else:
+            fsbl_path = board.fsbl_path
+            print_color(TermColors.YELLOW, "Using default FSBL", bit_path.relative_to(ROOT_PATH))
+        check_file_exists(fsbl_path)
 
-    with open(PATHS_CFG_PATH, "w") as fp:
+        # Get ELF
+        if args.elf is None:
+            error("You must provide an --elf if you provide an --fsbl")
+        elf_path = pathlib.Path(args.elf)
+        check_file_exists(elf_path)
+
+    with open(SETUP_CFG_PATH, "w") as fp:
         fp.write("set BITSTREAM_PATH " + str(bit_path) + "\n")
-        fp.write("set FSBL_PATH " + str(fsbl_path) + "\n")
-        fp.write("set ELF_PATH " + str(elf_path) + "\n")
+        fp.write("set SW " + ("1" if sw else "0") + "\n")
+        if sw:
+            fp.write("set FSBL_PATH " + str(fsbl_path) + "\n")
+            fp.write("set ELF_PATH " + str(elf_path) + "\n")
 
-    cmd = ["openocd", "-f", PATHS_CFG_PATH, "-f", "zedboard.cfg"]
+    cmd = ["openocd", "-f", SETUP_CFG_PATH, "-f", cfg_path]
     subprocess.run(cmd, cwd=ROOT_PATH)
 
 
