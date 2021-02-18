@@ -7,7 +7,7 @@ import subprocess
 
 ROOT_PATH = pathlib.Path(__file__).resolve().parent
 BOARDS_PATH = ROOT_PATH / "boards"
-SETUP_CFG_PATH = "setup.cfg"
+SETUP_CFG_PATH = ROOT_PATH / "setup.cfg"
 
 
 class TermColors:
@@ -71,7 +71,7 @@ def main():
     if args.bit:
         if not args.bit.endswith(".bit"):
             error("bit file should have .bit suffix")
-        bit_path = pathlib.Path(args.bit)
+        bit_path = pathlib.Path(args.bit).resolve()
     else:
         bit_path = board.bit_path
         print_color(TermColors.YELLOW, "Using default bitstream", bit_path.relative_to(ROOT_PATH))
@@ -85,7 +85,7 @@ def main():
         if args.fsbl:
             if not args.fsbl.endswith(".elf"):
                 error("FSBL file should have .elf suffix")
-            fsbl_path = pathlib.Path(args.fsbl)
+            fsbl_path = pathlib.Path(args.fsbl).resolve()
         else:
             fsbl_path = board.fsbl_path
             print_color(TermColors.YELLOW, "Using default FSBL", bit_path.relative_to(ROOT_PATH))
@@ -94,7 +94,7 @@ def main():
         # Get ELF
         if args.elf is None:
             error("You must provide an --elf if you provide an --fsbl")
-        elf_path = pathlib.Path(args.elf)
+        elf_path = pathlib.Path(args.elf).resolve()
         check_file_exists(elf_path)
 
     with open(SETUP_CFG_PATH, "w") as fp:
