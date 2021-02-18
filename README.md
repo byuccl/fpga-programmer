@@ -33,4 +33,4 @@ You can run software by specifying just the `--elf` option.  The `boards` folder
 
 
 ### Todo List of Features
-* Add support for PYNQ, Zybo and Ultra96 boards.
+* Add support for PYNQ and Ultra96 boards.
