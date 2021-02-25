@@ -8,7 +8,7 @@ Install openocd:
 
 ### Running
 ```
-usage: fpga_programmer.py [-h] [--bit BIT] [--fsbl FSBL] [--elf ELF] board
+usage: ./fpga_programmer.py [-h] [--bit BIT] [--fsbl FSBL] [--elf ELF] board
 
 positional arguments:
   board
