@@ -40,7 +40,7 @@ def check_file_exists(path):
 
 
 class Board:
-    def __init__(self, name):
+    def __init__(self, name, supports_sw):
         self.name = name
         board_path = BOARDS_PATH / name
         self.cfg_path = board_path / (name + ".cfg")
@@ -49,12 +49,15 @@ class Board:
         self.fsbl_path = board_path / "fsbl.elf"
         self.bit_path = board_path / (name + ".bit")
 
+        self.supports_sw = supports_sw
+
 
 def main():
     boards = []
 
-    boards.append(Board("zedboard"))
-    boards.append(Board("zybo"))
+    boards.append(Board("zedboard", supports_sw=True))
+    boards.append(Board("zybo", supports_sw=True))
+    boards.append(Board("basys3", supports_sw=False))
 
     parser = argparse.ArgumentParser()
     parser.add_argument("board", choices=[b.name for b in boards])
@@ -79,6 +82,8 @@ def main():
 
     # Check if we are programming software
     sw = args.fsbl or args.elf
+    if sw and not board.supports_sw:
+        error("Board does not support software.")
 
     if sw:
         # Get FSBL

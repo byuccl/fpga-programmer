@@ -24,6 +24,7 @@ optional arguments:
 Currently supported boards:
   * `zedboard`
   * `zybo`
+  * `basys3`
 
 #### Hardware Only
 If you only want to program hardware, just provide the `--bit` bitstream and ignore the software arguments.
