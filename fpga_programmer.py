@@ -9,6 +9,10 @@ ROOT_PATH = pathlib.Path(__file__).resolve().parent
 BOARDS_PATH = ROOT_PATH / "boards"
 SETUP_CFG_PATH = ROOT_PATH / "setup.cfg"
 
+THIRD_PARTY_PATH = ROOT_PATH / "third_party"
+OPENOCD_PATH = THIRD_PARTY_PATH / "openocd"
+OPENOCD_BIN_PATH = OPENOCD_PATH / "src" / "openocd"
+
 
 class TermColors:
     """ Terminal codes for printing in color """
@@ -110,7 +114,7 @@ def main():
             fp.write("set FSBL_PATH " + str(fsbl_path) + "\n")
             fp.write("set ELF_PATH " + str(elf_path) + "\n")
 
-    cmd = ["openocd", "-f", SETUP_CFG_PATH, "-f", cfg_path]
+    cmd = [str(OPENOCD_BIN_PATH), "-f", SETUP_CFG_PATH, "-f", cfg_path]
     subprocess.run(cmd, cwd=ROOT_PATH)
 
 
