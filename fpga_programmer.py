@@ -58,6 +58,7 @@ def main():
     boards.append(Board("zedboard", supports_sw=True))
     boards.append(Board("zybo", supports_sw=True))
     boards.append(Board("basys3", supports_sw=False))
+    boards.append(Board("ultra96v2", supports_sw=True))
 
     parser = argparse.ArgumentParser()
     parser.add_argument("board", choices=[b.name for b in boards])
