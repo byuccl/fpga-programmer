@@ -114,7 +114,7 @@ def main():
             fp.write("set FSBL_PATH " + str(fsbl_path) + "\n")
             fp.write("set ELF_PATH " + str(elf_path) + "\n")
 
-    cmd = [str(OPENOCD_BIN_PATH), "-f", SETUP_CFG_PATH, "-f", cfg_path]
+    cmd = [str(OPENOCD_BIN_PATH), "-s", str(OPENOCD_PATH / "tcl") , "-f", SETUP_CFG_PATH, "-f", cfg_path]
     subprocess.run(cmd, cwd=ROOT_PATH)
 
 
