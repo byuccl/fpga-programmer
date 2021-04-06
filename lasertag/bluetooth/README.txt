@@ -13,6 +13,6 @@ own communication routines as necessary. Do not compile it as because it
 will cause multiple symbol defintions as this file is already compiled into
 the ZYBO libraries that are linked with all executables.
 
-The source code for the Android version can be found at:
+The source code for the Android version of the Adafruit Connect app can be found at:
 
 https://github.com/adafruit/Bluefruit_LE_Connect_Android
