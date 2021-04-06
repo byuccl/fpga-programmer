@@ -35,7 +35,7 @@ int main() {
   display_print("* 5. Charcters echo back in upper case in app & *\n\r");
   display_print("*    on TFT.                                    *\n\r");
   display_print("*************************************************\n\r");
-  display_setTextColor(DISPLAY_GREEN);
+  display_setTextColor(DISPLAY_YELLOW);
   display_setTextSize(TEXT_SIZE);
   interrupts_initAll(true); // Init all interrupts (but does not enable the
                             // interrupts at the devices).
