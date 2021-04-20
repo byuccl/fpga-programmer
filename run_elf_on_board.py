@@ -15,7 +15,7 @@ XSCT_BIN_WINDOWS = "C:/Xilinx/Vitis/2019.2/bin/xsct"
 LABS_DIR = pathlib.Path(__file__).resolve().parent
 
 
-class TermColor:
+class TermColors:
     """ Terminal codes for printing in color """
 
     PURPLE = "\033[95m"
@@ -30,12 +30,12 @@ class TermColor:
 
 def print_color(color, *msg):
     """ Print a message in color """
-    print(color + " ".join(str(item) for item in msg), TermColor.END)
+    print(color + " ".join(str(item) for item in msg), TermColors.END)
 
 
 def error(*msg, returncode=-1):
     """ Print an error message and exit program """
-    print_color(TermColor.RED, "ERROR:", *msg)
+    print_color(TermColors.RED, "ERROR:", *msg)
     sys.exit(returncode)
 
 
@@ -54,7 +54,7 @@ def main():
     if not elf_path.is_file():
         error("File", elf_path, "does not exist")
 
-    print_color(TermColor.PURPLE, "\nProgramming elf file:", elf_path)
+    print_color(TermColors.PURPLE, "\nProgramming elf file:", elf_path)
 
     if args.windows:
         win_temp_path = pathlib.Path("/mnt/c/temp/ecen330")
@@ -84,4 +84,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
