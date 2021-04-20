@@ -17,7 +17,7 @@ import re
 repo_path = pathlib.Path(__file__).absolute().parent.resolve()
 test_repo_path = (repo_path / "test_repo").resolve()
 build_path = test_repo_path / "build"
-checker_path = repo_path / "checker"
+checker_path = repo_path / "tools" / "checker"
 
 
 class TermColor:
@@ -163,9 +163,9 @@ def get_files_to_copy_and_zip(lab):
         files.append((lasertag_path / "trigger.c", None, True))
     elif lab == "390m3-3":
         files.append((lasertag_path / "detector.c", None, True))
-#        files.append((lasertag_path / "autoReloadTimer.c", None, True))
-#        files.append((lasertag_path / "invincibilityTimer.c", None, True))
-#        files.append((lasertag_path / "ledTimer.c", None, True))
+        #        files.append((lasertag_path / "autoReloadTimer.c", None, True))
+        #        files.append((lasertag_path / "invincibilityTimer.c", None, True))
+        #        files.append((lasertag_path / "ledTimer.c", None, True))
         files.append((lasertag_path / "lockoutTimer.c", None, True))
         files.append((lasertag_path / "isr.c", None, True))
     elif lab == "390m5":

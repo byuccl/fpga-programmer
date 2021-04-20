@@ -40,13 +40,13 @@ else()
     # These options are required if you want to use the Zybo board emulator    
 
     # This sets up options for the compiler
-    include (emulator/emu.cmake)
+    include (platforms/emulator/emu.cmake)
 
     # Places to search for .h header files
-    include_directories(emulator/include)
+    include_directories(platforms/emulator/include)
 
     # link_directories instructs the compiler where it should look for libraries.
-    link_directories(emulator)
+    link_directories(platforms/emulator)
 
     # Set this variable to the name of libraries that the emulator needs to link to
     set(330_LIBS emu Qt5Widgets Qt5Gui Qt5Core pthread)
