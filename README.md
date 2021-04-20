@@ -1,6 +1,7 @@
 # BYU ECEN 330 Student Template Repository
 
-[![Build Status](https://travis-ci.com/byu-cpe/ecen330_student.svg?branch=master)](https://travis-ci.com/byu-cpe/ecen330_student)
+![Build](https://github.com/byu-cpe/ecen330_student/actions/workflows/ci.yml/badge.svg)
+
 
 ```
 This software is provided for student assignment use in the Department of
