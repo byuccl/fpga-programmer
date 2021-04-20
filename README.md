@@ -1,6 +1,6 @@
 # BYU ECEN 330 Student Template Repository
 
-![example workflow](https://github.com/github/docs/actions/workflows/ci.yml/badge.svg)
+![Build](https://github.com/byu-cpe/ecen330_student/actions/workflows/ci.yml/badge.svg)
 
 
 ```
