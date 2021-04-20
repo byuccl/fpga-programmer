@@ -45,10 +45,10 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 // your histogram.
 #define HISTOGRAM_MAX_BAR_COUNT                                                \
   25 // You can have up to 25 bars on your histogram.
-///#define HISTOGRAM_BAR_COUNT 10				// This is the number
-///of histogram bars that you want.
+///#define HISTOGRAM_BAR_COUNT 10				// This is the
+///number of histogram bars that you want.
 //#define HISTOGRAM_BAR_X_GAP 5					// This is the
-//gap, in pixels, between each bar.
+// gap, in pixels, between each bar.
 #define HISTOGRAM_BAR_X_GAP 1 // This is the gap, in pixels, between each bar.
 #define HISTOGRAM_BAR_Y_GAP                                                    \
   (DISPLAY_CHAR_HEIGHT *                                                       \
