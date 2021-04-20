@@ -11,7 +11,7 @@ repo_root_dir = pathlib.Path(__file__).parent.absolute()
 dirs_to_format = ["lab", "my_libs", "lasertag"]
 extensions_to_format = [".c", ".h"]
 
-dirs_to_exclude_from_all = ["build/", "hw/", "zybo/xil_arm_toolchain/bsp"]
+dirs_to_exclude = ["build/", "hw/", "zybo/xil_arm_toolchain/bsp", "lasertag/sounds"]
 
 
 def main():
@@ -36,16 +36,18 @@ def main():
 
         d_rel = str(d.relative_to(repo_root_dir))
 
+        exclude = False
+        for dir_re in dirs_to_exclude:
+            if re.match(dir_re, d_rel):
+                exclude = True
+                break
+        if exclude:
+            continue
+
         # If --all option is set, match against everything except the black-list (dirs_to_exclude_from_all),
         # otherwise match against the white list (dirs_to_format)
         if args.all:
-            exclude = False
-            for dir_re in dirs_to_exclude_from_all:
-                if re.match(dir_re, d_rel):
-                    exclude = True
-                    break
-            if not exclude:
-                dirs_matched.append(d)
+            dirs_matched.append(d)
         else:
             for dir_re in dirs_to_format:
                 if re.match(dir_re, d_rel):
