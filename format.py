@@ -16,6 +16,9 @@ dirs_to_exclude = [
     "platforms/hw/",
     "platforms/zybo/xil_arm_toolchain/bsp",
     "lasertag/sounds",
+    "old_digilent_files_solns",
+    "student",
+    "student_repo",
 ]
 
 
