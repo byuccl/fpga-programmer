@@ -110,11 +110,15 @@ def main():
         win_temp_path.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(elf_path, win_temp_path / "program.elf")
         shutil.copyfile(
-            LABS_DIR / "zybo/xil_arm_toolchain/run_elf_windows.tcl",
+            LABS_DIR / "platforms/zybo/xil_arm_toolchain/run_elf_windows.tcl",
             win_temp_path / "run_elf_windows.tcl",
         )
-        shutil.copyfile(LABS_DIR / "hw/330_hw_system.bit", win_temp_path / "330_hw_system.bit")
-        shutil.copyfile(LABS_DIR / "hw/330_hw_system.xsa", win_temp_path / "330_hw_system.xsa")
+        shutil.copyfile(
+            LABS_DIR / "platforms/hw/330_hw_system.bit", win_temp_path / "330_hw_system.bit"
+        )
+        shutil.copyfile(
+            LABS_DIR / "platforms/hw/330_hw_system.xsa", win_temp_path / "330_hw_system.xsa"
+        )
 
     # Execute programming and print output
 
@@ -125,7 +129,7 @@ def main():
             "/C",
             "cd C:/temp/ecen330 && " + XSCT_BIN_WINDOWS + " C:/temp/ecen330/run_elf_windows.tcl",
         ]
-        subprocess.run(cmd)
+        subprocess.run(cmd, cwd="/mnt/c")
     elif args.xilinx_programmer:
         # Use xilinx programmer
         my_env = os.environ.copy()
