@@ -20,7 +20,7 @@ build_path = test_repo_path / "build"
 checker_path = repo_path / "tools" / "checker"
 
 
-class TermColor:
+class TermColors:
     """ Terminal codes for printing in color """
 
     # pylint: disable=too-few-public-methods
@@ -37,19 +37,19 @@ class TermColor:
 
 def print_color(color, *msg):
     """ Print a message in color """
-    print(color + " ".join(str(item) for item in msg), TermColor.END)
+    print(color + " ".join(str(item) for item in msg), TermColors.END)
 
 
 def error(*msg, returncode=-1):
     """ Print an error message and exit program """
 
-    print_color(TermColor.RED, "ERROR:", " ".join(str(item) for item in msg))
+    print_color(TermColors.RED, "ERROR:", " ".join(str(item) for item in msg))
     sys.exit(returncode)
 
 
 def format_code():
     """ Run ./format.py to format student code """
-    print_color(TermColor.BLUE, "Formatting code")
+    print_color(TermColors.BLUE, "Formatting code")
 
     subprocess.run(
         [
@@ -69,7 +69,7 @@ def clone_student_repo():
     if test_repo_path.is_dir():
         error("Could not delete", test_repo_path)
 
-    print_color(TermColor.BLUE, "Cloning ecen330 base repo into", test_repo_path)
+    print_color(TermColors.BLUE, "Cloning ecen330 base repo into", test_repo_path)
     proc = subprocess.run(
         [
             "git",
@@ -88,7 +88,7 @@ def clone_student_repo():
 def get_files_to_copy_and_zip(lab):
     """ Build a list of (src,dest) files to copy into the temp repo given the lab """
 
-    print_color(TermColor.BLUE, "Enumerating files to copy/zip")
+    print_color(TermColors.BLUE, "Enumerating files to copy/zip")
 
     chk_lab_path = checker_path / lab
     src_lab_path = repo_path / lab
@@ -188,7 +188,7 @@ def get_files_to_copy_and_zip(lab):
 def copy_solution_files(files_to_copy):
     """ Copy student files to the temp repo """
 
-    print_color(TermColor.BLUE, "Copying your solution files to the test_repo")
+    print_color(TermColors.BLUE, "Copying your solution files to the test_repo")
 
     # files_to_copy provides a list of files in (src_path, dest_path, include_in_zip?) format
     for (src, dest, _) in files_to_copy:
@@ -202,13 +202,13 @@ def build(milestone):
     """ Run cmake/make """
 
     if milestone:
-        print_color(TermColor.BLUE, "Trying to build (-D" + milestone + "=1)")
+        print_color(TermColors.BLUE, "Trying to build (-D" + milestone + "=1)")
     else:
-        print_color(TermColor.BLUE, "Trying to build")
+        print_color(TermColors.BLUE, "Trying to build")
 
-    print_color(TermColor.BLUE, "Removing build directory (" + str(build_path) + ")")
+    print_color(TermColors.BLUE, "Removing build directory (" + str(build_path) + ")")
     shutil.rmtree(build_path)
-    print_color(TermColor.BLUE, "Creating build directory (" + str(build_path) + ")")
+    print_color(TermColors.BLUE, "Creating build directory (" + str(build_path) + ")")
     build_path.mkdir()
 
     # Run cmake
@@ -238,11 +238,11 @@ def build(milestone):
         input_txt = ""
         while input_txt not in ["y", "n"]:
             input_txt = input(
-                TermColor.YELLOW
+                TermColors.YELLOW
                 + "Your code has "
                 + str(len(matches))
                 + " warning(s).  You will lose a coding standard point for each warning.  Are you sure you want to continue? (y/n) "
-                + TermColor.END
+                + TermColors.END
             ).lower()
         if input_txt == "n":
             error("User cancelled zip process.")
@@ -262,7 +262,7 @@ def zip(lab, files):
     """ Zip the lab files """
 
     zip_path = repo_path / (getpass.getuser() + "_" + lab + ".zip")
-    print_color(TermColor.BLUE, "Creating zip file", zip_path.relative_to(repo_path))
+    print_color(TermColors.BLUE, "Creating zip file", zip_path.relative_to(repo_path))
     if zip_path.is_file():
         print("Deleting existing file.")
         zip_path.unlink()
@@ -355,11 +355,11 @@ def main():
             input_txt = ""
             while input_txt not in ["y", "n"]:
                 input_txt = input(
-                    TermColor.YELLOW
+                    TermColors.YELLOW
                     + "Could not clone Github repo.  Perhaps you are not connected to the internet. "
                     "It is recommended that you cancel the process, connect to the internet, and retry. "
                     "If you proceed, the generated zip file will be untested, and may not build properly on the TA's evaluation system. "
-                    "Are you sure you want to proceed? (y/n) " + TermColor.END
+                    "Are you sure you want to proceed? (y/n) " + TermColors.END
                 ).lower()
             if input_txt == "n":
                 error("User cancelled zip process.")
@@ -372,23 +372,23 @@ def main():
             for (config_name, config_define) in get_milestones(args.lab):
                 build_and_run = True
                 if args.no_run:
-                    print_color(TermColor.BLUE, "Now Testing", config_name)
+                    print_color(TermColors.BLUE, "Now Testing", config_name)
                 else:
                     input(
-                        TermColor.BLUE
+                        TermColors.BLUE
                         + "Now Testing "
                         + config_name
                         + ". Hit <Enter> to continue."
-                        + TermColor.END
+                        + TermColors.END
                     )
 
                 # See if the code builds
                 if build(config_define):
                     # Run it
                     if not args.no_run:
-                        print_color(TermColor.BLUE, "Running", args.lab, config_name)
+                        print_color(TermColors.BLUE, "Running", args.lab, config_name)
                         print_color(
-                            TermColor.BLUE,
+                            TermColors.BLUE,
                             "If the emulator won't close, press Ctrl+C in this terminal.",
                         )
                         run(args.lab)
@@ -396,11 +396,11 @@ def main():
                     s = ""
                     while s not in ("y", "n"):
                         s = input(
-                            TermColor.RED
+                            TermColors.RED
                             + "Build failed for "
                             + config_name
                             + ". Continue? (y/n)"
-                            + TermColor.END
+                            + TermColors.END
                         ).lower()
                     if s == "n":
                         sys.exit(0)
@@ -408,7 +408,11 @@ def main():
     # Zip it
     zip_relpath = zip(args.lab, files)
 
-    print_color(TermColor.BLUE, "Done. Created", zip_relpath)
+    # Delete test repo
+    print_color(TermColors.BLUE, "Removing", test_repo_path.name)
+    shutil.rmtree(test_repo_path, ignore_errors=True)
+
+    print_color(TermColors.BLUE, "Created", zip_relpath, "\nDone.")
 
 
 if __name__ == "__main__":
