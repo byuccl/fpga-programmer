@@ -60,6 +60,8 @@
 #ifndef XIL_TYPES_H /* prevent circular inclusions */
 #define XIL_TYPES_H /* by using protection macros */
 
+#include <stdint.h>
+
 /************************** Constant Definitions *****************************/
 
 #ifndef TRUE
@@ -88,9 +90,9 @@
 /**
  * guarded against xbasic_types.h.
  */
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned long u32;
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
 
 #define __XUINT64__
 typedef struct {
