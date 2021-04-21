@@ -12,7 +12,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y qt5-default gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib clang-format-6.0
     - name: Compile emulator
-      run: cd build && rm -rf ./* && cmake .. -DEMULATOR=1 && make -j4  
+      run: cd build && rm -rf ./* && cmake .. -DEMU=1 && make -j4  
     - name: Compile Zybo
       run: cd build && rm -rf ./* && cmake .. && make -j4
     - name: Check C/C++ formatting
