@@ -212,7 +212,7 @@ def build(milestone):
     build_path.mkdir()
 
     # Run cmake
-    cmake_cmd = ["cmake", "..", "-DEMULATOR=1"]
+    cmake_cmd = ["cmake", "..", "-DEMU=1"]
     if milestone is not None:
         cmake_cmd.append("-D" + milestone + "=1")
     proc = subprocess.run(cmake_cmd, cwd=build_path, check=False)
