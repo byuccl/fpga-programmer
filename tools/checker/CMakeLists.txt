@@ -8,12 +8,6 @@ include_directories(my_libs)
 # add_compile_options(-Wall -Wextra -pedantic)
 # add_compile_options(-Wall -Wextra -pedantic -Werror)
 
-if (SDCARD)
-    set (XIL_LIB xil_uart)
-else()
-    set(XIL_LIB xil)
-endif()
-
 if (NOT EMULATOR)
     # These are the options used to compile and run on the physical Zybo board    
     # You will need to compile using "cmake -DBOARD=1"
@@ -29,7 +23,7 @@ if (NOT EMULATOR)
     link_directories(platforms/zybo/xil_arm_toolchain)
 
     # Set this variable to the name of libraries that board executables needs to link to
-    set(330_LIBS c gcc zybo ${XIL_LIB} c)
+    set(330_LIBS c gcc zybo xil c)
 
     # Pass the BOARD variable to the compiler, so it can be used in #ifdef statements
     add_compile_definitions(ZYBO_BOARD=1)

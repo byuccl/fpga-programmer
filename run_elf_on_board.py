@@ -8,7 +8,7 @@ import serial
 import shutil
 import pathlib
 
-VITIS_BIN = "/tools/Xilinx/Vitis/2019.2/bin/vitis"
+VITIS_BIN = "/opt/Xilinx/Vitis/2019.2/bin/vitis"
 XSCT_BIN_WINDOWS = "C:/Xilinx/Vitis/2019.2/bin/xsct"
 
 LABS_DIR = pathlib.Path(__file__).resolve().parent
@@ -38,6 +38,36 @@ def error(*msg, returncode=-1):
     sys.exit(returncode)
 
 
+def find_serial(interface_id):
+    """This function finds device files in /dev that are named ttyUSB* and are using interface 1.
+    If 0 or multiple files are found, this function throws an error.
+    """
+    matches = []
+    for dev_path in pathlib.Path("/dev").glob("ttyUSB*"):
+        # print(str(dev_path))
+
+        p = subprocess.run(
+            ["udevadm", "info", "-q", "path", "-n", dev_path], stdout=subprocess.PIPE
+        )
+
+        m = re.search(r"\." + str(interface_id) + r"/ttyUSB", p.stdout.decode())
+        if not m:
+            continue
+        matches.append(dev_path)
+
+    if not matches:
+        error(
+            "No board could be found.  Make sure the board is plugged in and powered on.  You can also try powering it off and back on."
+        )
+    if len(matches) > 1:
+        error(
+            "Multiple boards connected ("
+            + ",".join([str(p) for p in matches])
+            + "). Make sure only the Zybo board is plugged in."
+        )
+    return matches[0]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -57,6 +87,20 @@ def main():
 
     if not elf_path.is_file():
         error("File", elf_path, "does not exist")
+
+    # Find the serial device file (Zybo uses interface 1)
+    serial_path = None
+    if not args.windows:
+        serial_path = find_serial(interface_id=1)
+
+    # Open serial device in nonblocking mode
+    if serial_path:
+        print_color(TermColors.PURPLE, "Capturing output from serial device", serial_path)
+        try:
+            ser = serial.Serial(str(serial_path), baudrate=115200, timeout=0)
+        except serial.serialutil.SerialException as exc:
+            print(exc)
+            error("Could not open serial port. Power the board off and on and then try again.")
 
     print_color(TermColors.PURPLE, "\nProgramming elf file:", elf_path)
 
@@ -86,13 +130,19 @@ def main():
         # Use xilinx programmer
         my_env = os.environ.copy()
         my_env["ELF_FILE"] = elf_path
-        cmd = [VITIS_BIN, "-batch", str(LABS_DIR / "zybo/xil_arm_toolchain/run_elf.tcl")]
+        cmd = [VITIS_BIN, "-batch", str(LABS_DIR / "platforms/zybo/xil_arm_toolchain/run_elf.tcl")]
         subprocess.run(cmd, cwd=LABS_DIR, env=my_env)
 
     else:
+
         # Use openocd programmer
+        programmer_path = LABS_DIR / "tools" / "fpga-programmer" / "fpga_programmer.py"
+        if not programmer_path.is_file():
+            error(
+                "fpga-programmer not found.  Did you remember to run 'make setup' from the top-level directory?"
+            )
         cmd = [
-            LABS_DIR / "tools" / "fpga-programmer" / "fpga_programmer.py",
+            programmer_path,
             "zybo",
             "--bit",
             LABS_DIR / "platforms" / "hw" / "330_hw_system.bit",
@@ -101,7 +151,19 @@ def main():
         ]
         subprocess.run(cmd)
 
-    # print(cmd)
+    if serial_path:
+        print_color(TermColors.PURPLE + "\nPrinting program output from serial (Ctrl+C to quit)")
+        while True:
+            try:
+                line = ser.readline().decode("ascii", errors="replace")
+                if line != "":
+                    sys.stdout.write(line)
+            except KeyboardInterrupt:
+                print("")
+                # proc.kill()
+                # if args.fileName:
+                #     f.close()
+                break
 
 
 if __name__ == "__main__":
