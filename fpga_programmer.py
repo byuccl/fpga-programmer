@@ -93,7 +93,7 @@ def main():
             fsbl_path = pathlib.Path(args.fsbl).resolve()
         else:
             fsbl_path = board.fsbl_path
-            print_color(TermColors.YELLOW, "Using default FSBL", bit_path.relative_to(ROOT_PATH))
+            print_color(TermColors.YELLOW, "Using default FSBL", fsbl_path.relative_to(ROOT_PATH))
         check_file_exists(fsbl_path)
 
         # Get ELF
