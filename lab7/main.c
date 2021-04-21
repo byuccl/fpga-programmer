@@ -12,6 +12,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #include <stdio.h>
 
 #include "buttons.h"
+#include "config.h"
 #include "display.h"
 #include "interrupts.h"
 #include "intervalTimer.h"
@@ -44,7 +45,6 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 // Manual 4-2. Assuming that the prescaler = 0, the formula for computing the
 // load value based upon the desired period is: load-value = (period *
 // timer-clock) - 1
-#define TIMER_PERIOD 50.0E-3 // 50 ms.
 #define TIMER_CLOCK_FREQUENCY (XPAR_CPU_CORTEXA9_0_CPU_CLK_FREQ_HZ / 2)
 #define TIMER_LOAD_VALUE ((TIMER_PERIOD * TIMER_CLOCK_FREQUENCY) - 1.0)
 

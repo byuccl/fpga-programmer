@@ -15,6 +15,7 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 
 #include "bhTester.h"
 #include "buttonHandler.h"
+#include "config.h"
 #include "display.h"
 #include "flashSequence.h"
 #include "fsTester.h"
@@ -45,8 +46,6 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 #define RUN_PROGRAM MILESTONE_4
 #endif
 
-// Tick Period in ms. Adjust as necessary.
-#define TIMER_PERIOD 100.0E-3
 // Compute the timer clock freq.
 #define TIMER_CLOCK_FREQUENCY (XPAR_CPU_CORTEXA9_0_CPU_CLK_FREQ_HZ / 2)
 // Compute timer load value.
