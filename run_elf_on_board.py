@@ -8,8 +8,7 @@ import serial
 import shutil
 import pathlib
 
-VITIS_BIN = "/opt/Xilinx/Vitis/2019.2/bin/vitis"
-# VITIS_BIN = "/opt/Xilinx/Vitis/2019.2/bin/vitis"
+VITIS_BIN = "/tools/Xilinx/Vitis/2019.2/bin/vitis"
 XSCT_BIN_WINDOWS = "C:/Xilinx/Vitis/2019.2/bin/xsct"
 
 LABS_DIR = pathlib.Path(__file__).resolve().parent
@@ -46,6 +45,11 @@ def main():
         action="store_true",
         help="This flag indicates the Xilinx tools are installed in Windows",
     )
+    parser.add_argument(
+        "--xilinx_programmer",
+        action="store_true",
+        help="Use the Xilinx programmer instead of the openocd programmer.",
+    )
     parser.add_argument("elf", help="The elf file to run (ex. 'lab1/lab1.elf')")
     args = parser.parse_args()
 
@@ -56,6 +60,7 @@ def main():
 
     print_color(TermColors.PURPLE, "\nProgramming elf file:", elf_path)
 
+    # If running tools from Windows, copy necessary files to Windows directory.
     if args.windows:
         win_temp_path = pathlib.Path("/mnt/c/temp/ecen330")
         win_temp_path.mkdir(parents=True, exist_ok=True)
@@ -68,18 +73,35 @@ def main():
         shutil.copyfile(LABS_DIR / "hw/330_hw_system.xsa", win_temp_path / "330_hw_system.xsa")
 
     # Execute programming and print output
-    my_env = os.environ.copy()
-    my_env["ELF_FILE"] = elf_path
+
     if args.windows:
+        # Use xilinx programmer in Windows
         cmd = [
             "cmd.exe",
             "/C",
             "cd C:/temp/ecen330 && " + XSCT_BIN_WINDOWS + " C:/temp/ecen330/run_elf_windows.tcl",
         ]
-    else:
+        subprocess.run(cmd)
+    elif args.xilinx_programmer:
+        # Use xilinx programmer
+        my_env = os.environ.copy()
+        my_env["ELF_FILE"] = elf_path
         cmd = [VITIS_BIN, "-batch", str(LABS_DIR / "zybo/xil_arm_toolchain/run_elf.tcl")]
-    print(cmd)
-    subprocess.run(cmd, cwd=LABS_DIR, env=my_env)
+        subprocess.run(cmd, cwd=LABS_DIR, env=my_env)
+
+    else:
+        # Use openocd programmer
+        cmd = [
+            LABS_DIR / "tools" / "fpga-programmer" / "fpga_programmer.py",
+            "zybo",
+            "--bit",
+            LABS_DIR / "platforms" / "hw" / "330_hw_system.bit",
+            "--elf",
+            str(elf_path),
+        ]
+        subprocess.run(cmd)
+
+    # print(cmd)
 
 
 if __name__ == "__main__":
