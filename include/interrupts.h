@@ -14,7 +14,19 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 
 #include <stdbool.h>
 #include <stdint.h>
+
+#include "xil_types.h"
+
 //#include "../src/laserTag/queue.h"
+
+// These values can be used with interrupts_getAdcInputMode() to determine the
+// current mode for the ADC input.
+#define INTERRUPTS_ADC_UNIPOLAR_MODE                                           \
+  true // Positive input voltage 0V:1V -> 0:4095
+#define INTERRUPTS_ADC_BIPOLAR_MODE                                            \
+  false // Bipolar input voltage -0.5V:+0.5V -> -2048:+2047 (two's complement).
+#define INTERRUPTS_ADC_DEFAULT_INPUT_MODE                                      \
+  INTERRUPTS_ADC_UNIPOLAR_MODE // Change the default here.
 
 #ifdef ZYBO_BOARD
 
@@ -43,14 +55,6 @@ For questions, contact Brad Hutchings or Jeff Goeders, https://ece.byu.edu/
 // Uses interval timer 0 to measure time spent in ISR.
 #define ENABLE_INTERVAL_TIMER_0_IN_TIMER_ISR 1
 
-// These values can be used with interrupts_getAdcInputMode() to determine the
-// current mode for the ADC input.
-#define INTERRUPTS_ADC_UNIPOLAR_MODE                                           \
-  true // Positive input voltage 0V:1V -> 0:4095
-#define INTERRUPTS_ADC_BIPOLAR_MODE                                            \
-  false // Bipolar input voltage -0.5V:+0.5V -> -2048:+2047 (two's complement).
-#define INTERRUPTS_ADC_DEFAULT_INPUT_MODE                                      \
-  INTERRUPTS_ADC_UNIPOLAR_MODE // Change the default here.
 // Uses interval timer 0 to measure time spent in ISR.
 //#define ENABLE_INTERVAL_TIMER_0_IN_TIMER_ISR 1
 
@@ -120,8 +124,6 @@ extern volatile int interrupts_isrFlagGlobal;
 #else
 
 #define INTERRUPT_CUMULATIVE_ISR_INTERVAL_TIMER_NUMBER 0
-
-typedef uint32_t u32;
 
 #ifdef __cplusplus
 extern "C" {
