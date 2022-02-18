@@ -1,4 +1,4 @@
-The goal of this project is to support FPGA programming without requiring installation of the commercial FPGA tools.  It uses *openocd* to program both hardware (FPGA bitstream) and software (ARM FSBL + ELF).
+The goal of this project is to support FPGA programming without requiring installation of the commercial FPGA tools.  It is a lightweight wrapper around *openocd* to program both hardware (FPGA bitstream) and software (ARM FSBL + ELF).
 
 
 ### Prerequisites
